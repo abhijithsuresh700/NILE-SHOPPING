@@ -1,0 +1,169 @@
+<div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">Order List</h1>
+                    {{!-- <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
+                        For more information about DataTables, please visit the <a target="_blank"
+                            href="https://datatables.net">official DataTables documentation</a>.</p> --}}
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Detailed Order-Details</h6>
+                            {{!-- <a href="/admin/admin-add-banners" style="margin-top:10px ;" role="button" class="btn btn-info">Add Banners</a> --}}
+                        </div>
+                        <div class="card-body">
+                            {{!-- <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Order Date</th>
+                                            <th>Ordered Product</th>
+                                            <th>Order Amount</th>
+                                            <th>Status</th>
+                                            <th>Payment-Method</th>
+                                            <th>View Products</th>
+                                            <th>Cancel-Order</th>                                 
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        {{#each orderDetails}}     
+                                        <tr>
+                                            <td>{{inc @index}}</td>
+                                            <td>{{this.Date}}</td>
+                                            <td>{{#each this.products}}
+                                                <i class="far fa-dot-circle"></i>{{this.product.productname}} <br> {{/each}}</td>                                                                                      
+                                            <td>{{this.totalAmount}}</td>
+                                            <td>
+                                                {{#if this.status}}
+                                               <span style="color:green">{{this.status}}</span> 
+                                                {{else}}
+                                                <span style="color:red">Canceled</span>
+                                                {{/if}}
+                                                </td>
+                                            <td>{{this.paymentMethod}}</td>
+                                            <td><a href="/orderedProducts/{{this._id}}"  role="button" class="btn btn-secondary text-white">View Products</a></td>
+                                            <td>
+                                                 {{#if this.status}}
+                                                 <a role="button" class="btn btn-warning"  onclick="cancelOrder('{{this._id}}')">Cancel</a>
+                                                 {{else}} 
+                                                  <span style="color:red">Canceled</span>                                       
+                                            {{/if}}
+                                            </td> 
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div> --}}
+
+                            {{#each orderDetails}}
+<div class="container-fluid">    
+<div class="grid-margin stretch-card">
+                <div class="card" style="height: 200px;">
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table">
+                        <tbody style="border: none;">
+                          <tr>
+                            <td style="width:25px">{{inc @index}}</td>
+                            <td style="width:150px">{{this.Date}}</td>
+                             <td style="width:350px;font-size:15px; font-weight: 600;">{{#each this.products}}<i class="far fa-dot-circle"></i>{{this.product.productname}} <br> {{/each}}</td>  
+                            <td style="width:150px">₹{{this.totalAmount}}.00</td>
+                            <td style="width:150px">{{this.paymentMethod}}</td>
+                            <td style="width:150px">
+                                                {{#if_eq this.status "Placed"}}
+                                               <span style="color:rgb(27, 231, 27)">{{this.status}}</span> 
+                                                {{else if_eq this.status "Pending" }}
+                                                <span style="color:rgb(66, 166, 248)">{{this.status}}</span>
+                                                {{else if_eq this.status "Canceled"}}
+                                                <span style="color:red">{{this.status}}</span>
+                                                {{/if_eq}}
+
+                                                 
+                                                </td>
+                            <td style="width:150px"><a href="/orderedProducts/{{this._id}}" type="button" class="btn btn-light">View Product</a></td> 
+                             <td style="width:150px"> {{#if_eq this.status "Placed"}}<a role="button" class="btn btn-light"  onclick="cancelOrder('{{this._id}}')">Cancel-Order</a>
+                                  {{else if_eq this.status "Pending"}}<a role="button" class="btn btn-light"  onclick="cancelOrder('{{this._id}}')">Cancel-Order</a>
+                                   {{else}} 
+                                   <span style="color:red">Canceled</span>                                     
+                                  {{/if_eq}}
+                             </td>                           
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+              {{/each}}
+                        </div>
+                    </div>
+
+                </div>
+
+                <script>
+                    function cancelOrder(orderId){
+                         
+Swal.fire({
+   title: "Are you sure?",
+    text: "Once deleted, product will be removed from the cart!",
+    icon: "warning",
+   showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+}).then(async(result) => {
+  if (result.isConfirmed) {
+   await Swal.fire(
+      'Deleted!',
+      'Your file has been deleted.',
+      'success',
+  )
+  
+  }
+})
+                       
+                        $.ajax({
+                            url:"/cancelOrder",
+                            method:"post",
+                            data:{orderId}
+                        }).then((response)=>{
+                            if(response.cancel){
+                                location.href="/orderDetails"
+                            }
+                        })
+
+                    }
+                </script>
+
+
+{{!-- {{#each orderDetails}}
+<div class="container-fluid">    
+<div class="grid-margin stretch-card">
+                <div class="card" style="height: 200px;">
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table">
+                        <tbody style="border: none;">
+                          <tr>
+                            <td style="width:25px">{{inc @index}}</td>
+                            <td style="width:150px">{{this.Date}}</td>
+                             <td style="width:350px;font-size:15px; font-weight: 600;">{{#each this.products}}<i class="far fa-dot-circle"></i>{{this.product.productname}} <br> {{/each}}</td>  
+                            <td style="width:150px">{{this.totalAmount}}</td>
+                            <td style="width:150px">{{this.paymentMethod}}</td>
+                            <td style="width:150px;">{{this.status}}</td>
+                            <td style="width:150px"><a href="" type="button" class="btn btn-info">View Product</a></td>
+                            <td style="width:150px"><a href="" type="button" class="btn btn-danger">Cancel</a></td>                            
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+              {{/each}} --}}

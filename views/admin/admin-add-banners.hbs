@@ -1,0 +1,43 @@
+
+            <div class=" d-flex justify-content-center container d-flex align-items-center" style="margin-top:80px;">
+<div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h1 class="card-title mb-5" style="font-size:30px;">Add Banners</h1>
+                    <form class="forms-sample" action="/admin/addbanners" method="post" enctype="multipart/form-data">
+                      <div class="form-group">
+                        <label for="exampleInputName1">Banner Heading</label>
+                        <input type="text" name="bannerHeader" class="form-control" id="exampleInputName1" placeholder="Banner Heading" required/>
+                      </div>
+                       <div class="form-group">
+                        <label for="exampleInputName1">Banner Sub-Heading</label>
+                        <input type="text" name="bannerSubHeading" class="form-control" id="exampleInputName1" placeholder="Banner Sub-Heading" required/>
+                      </div>
+                      
+                   
+                            
+                      <div class="form-group">
+                        <label for="exampleTextarea1">Description</label>
+                        <input
+                          class="form-control"
+                          name="description"
+                          id="exampleTextarea1"
+                          rows="4"
+                          name="description"
+                          required
+                        ></input>
+                      </div>
+                       
+                      <div class="mb-5">
+                           <label for="formFile" class="form-label">Image upload</label>
+                           <input class="form-control" name="images"  type="file" id="formFile" required  multiple/>
+                            </div>
+                      <button type="submit" class="btn btn-primary me-2"> Submit </button>
+                      <button class="btn btn-light">Cancel</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+

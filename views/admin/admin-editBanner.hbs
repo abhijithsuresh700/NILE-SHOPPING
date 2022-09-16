@@ -1,0 +1,54 @@
+
+            <div class=" d-flex justify-content-center container d-flex align-items-center" style="margin-top:80px;">
+<div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h1 class="card-title mb-5" style="font-size:30px;">Edit Banners</h1>
+                    
+                    <form class="forms-sample" action="/admin/edited-banners/{{bannerDetails._id}}" method="post" enctype="multipart/form-data">
+                      <div class="form-group">
+                        <label for="exampleInputName1">Banner Header</label>
+                        <input type="text" name="bannerHeader" class="form-control" id="exampleInputName1" value="{{bannerDetails.bannerHeader}}" placeholder="Banner Heading" required/>
+                      </div>
+                       <div class="form-group">
+                        <label for="exampleInputName1">Banner Sub-Header</label>
+                        <input type="text" name="bannerSubHeading" class="form-control" id="exampleInputName1" value="{{bannerDetails.bannerSubHeading}}" placeholder="Banner Sub-Heading" required/>
+                      </div>
+                      
+                   
+                            
+                      <div class="form-group">
+                        <label for="exampleTextarea1">Description</label>
+                        <input
+                         value="{{bannerDetails.description}}"
+                          class="form-control"
+                          name="description"
+                          id="exampleTextarea1"
+                          rows="4"
+                          name="description"
+                          required
+                        ></input>
+                      </div>
+                       
+                      <div class="mb-5">
+                           <label for="formFile" class="form-label">Image upload</label>
+                         <img src="/public/images/{{bannerDetails._id}}" id="imageView" style="width:100px;height:100px;">
+
+                           <input class="form-control" name="images" onchange="viewImage(event)" value="{{bannerDetails.images}}" type="file" id="formFile" required  multiple/>
+                            </div>
+                      <button type="submit" class="btn btn-primary me-2"> Submit </button>
+                      <button class="btn btn-light">Cancel</button>
+                    </form>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+
+              <script>
+                function viewImage(event){
+                    document.getElementById('imageView').src=URL.createObjectURL(event.target.files[0])
+                }
+            </script>
+            
+

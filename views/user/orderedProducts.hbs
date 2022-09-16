@@ -1,0 +1,44 @@
+
+<div class="container">
+  <h2 class="mb-3 ml-3 mt-3">Order Status</h2>
+  <div class="card">
+    <div class="card-body">
+      <h5>Delivey Address </h5>
+      {{singleOrderDetails.[0].address.userName}}<br>
+      {{singleOrderDetails.[0].address.userAddress1}}<br>
+      {{singleOrderDetails.[0].address.userAddress2}}<br>
+      {{singleOrderDetails.[0].address.userArea}}<br>
+      {{singleOrderDetails.[0].address.userState}}<br>
+      {{singleOrderDetails.[0].address.userMobileNumber}}
+    </div>
+  </div>
+  {{#each orderedProducts}}
+<div class="grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table">
+                        <tbody style="border: none;">
+                          <tr>
+                            <td style="width:25px">{{inc @index}}</td>
+                            <td style="width: 100px;"><img src="/images/{{this.product.images.[0]}}" alt=""></td>
+                            <td style="width:500px;font-size:15px; font-weight: 600;"><div>{{this.product.productname}}</div><span style="color:#b2beb5">{{this.product.brandname}}</span></td>
+                            <td>OrderID:-{{this._id}}</td>
+                            <td style="width:250px;">{{this.product.singleOrderStatus}}</td>
+                            <td style="width:150px"> ₹{{this.product.price}}.00</td>
+                            {{!-- <td>
+                              <label style="font-size: 15px;" class="badge badge-success p-2">{{this.status}}</label>
+                            </td>
+                            <td>₹ {{this.totalAmount}}</td>
+                            <td><a href="" class="btn btn-danger">Cancel</a></td> --}}
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {{/each}}
+              </div>
+
+

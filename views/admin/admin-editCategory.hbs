@@ -1,0 +1,37 @@
+<div class="content-wrapper">
+            <div  class="tabledesign container">
+                    <h2 class="mb-5">Edit Category</h2>
+              <div class=" grid-margin stretch-card ">
+                <div class="card">
+                  <div class="card-body">
+                    {{#if categoryDetails}}
+
+                    <form class="forms-sample" action="/admin/editedCategory/{{categoryDetails._id}}" method="post">
+                      <div class="form-group row">
+                        <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Category Name</label>
+                        <div class="col-sm-4 row">
+                          <input type="text" class="form-control" id="exampleInputUsername2" name="catagoryname" value="{{categoryDetails.catagoryname}}" placeholder="Category Name" required/>
+                        </div>
+                        <div class="col-sm-2 mt-1">
+                            <button style="background-color:white; color:black; box-shadow: 2px 5px rgb(88, 88, 88);" type="submit" class="btn btn-dark fs-6" onclick="addSubCatagories()">+</button>
+                            <button style="background-color:white; color:black; box-shadow: 2px 5px rgb(88, 88, 88); margin-left: 10px;" type="submit" class="btn btn-danger fs-6" onclick="removeSubCatagories()">-</button>
+                        </div>
+                      </div>
+                      <div class="form-group row" >
+                        <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Sub-Category Name</label>
+                        <div id="addSubCatagory" class="col-sm-9" >
+                               {{#each categoryDetails.subCatagory}}
+                         <input type="text" class="form-control mb-2" name="subCatagory" id="subCatagory" value="{{this}}" placeholder="Sub-Category Name" required />
+                        {{/each}}
+                         
+                        </div>
+                      </div>
+                      <button type="submit" class="btn btn-primary me-2">Edit Category</button>
+                      {{!-- <a class="btn btn-light" href="/admin/category">Back</a> --}}
+                    </form>
+                    {{/if}}
+                  </div>
+                </div>
+              </div>
+                  {{!-- </div> --}}
+                  {{!-- <script src="/javascripts/categories/subcategories.js"></script> --}}

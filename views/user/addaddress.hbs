@@ -1,0 +1,89 @@
+<div class="container">
+    
+  <div class="row mx-0 justify-content-center">
+    
+    <div class="col-md-7 col-lg-5 px-lg-2 col-xl-4 px-xl-0 px-xxl-3">
+       <div class="mt-4"><h5>Add Address</h5></div> 
+      <form
+        method="POST"
+        class="w-100 rounded-1 p-4 border bg-white"
+        action="/userProfile"
+      >
+        <label class="d-block mb-4">
+          <span class="form-label d-block">Your name</span>
+          <input
+            name="userName"
+            type="text"
+            class="form-control"
+            placeholder=""
+          />
+        </label>
+
+        <label class="d-block mb-4">
+          <span class="form-label d-block">Address line 1</span>
+          <input
+            name="userAddress1"
+            type="text"
+            class="form-control"
+            placeholder=""
+          />
+        </label>
+
+        <label class="d-block mb-4">
+          <span class="form-label d-block">Address line 2</span>
+          <input
+            name="userAddress2"
+            type="text"
+            class="form-control"
+            placeholder=""
+          />
+        </label>
+
+        <label class="d-block mb-4">
+          <span class="form-label d-block">City</span>
+          <input name="userArea" type="text" class="form-control" placeholder="" />
+        </label>
+
+        <label class="d-block mb-4">
+          <span class="form-label d-block">State</span>
+          <input name="userState" type="text" class="form-control" placeholder="" />
+        </label>
+
+        <label class="d-block mb-4">
+          <span class="form-label d-block">Postal code</span>
+          <input name="userPinCode" type="text" class="form-control" placeholder="" />
+        </label>
+
+        <label class="d-block mb-4">
+          <span class="form-label d-block">Country</span>
+          <input
+            name="userCountry"
+            type="text"
+            class="form-control"
+            placeholder=""
+          />
+        </label>
+
+        <label class="d-block mb-4">
+          <span class="form-label d-block">Mobile Number</span>
+          <input
+            name="userMobileNumber"
+            type="text"
+            class="form-control"
+            placeholder=""
+          />
+        </label>
+        <div class="mb-3">
+          <button type="submit" class="btn btn-primary px-3 rounded-3">
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+    body { padding: 2rem 0; }
+
+</style>

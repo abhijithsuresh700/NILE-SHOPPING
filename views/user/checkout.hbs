@@ -1,0 +1,215 @@
+<!-- ##### Breadcumb Area Start ##### -->
+<div class="breadcumb_area bg-img" style="background-image: url(img/bg-img/breadcumb.jpg);">
+    <div class="container h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-12">
+                <div class="page-title text-center">
+                    <h2>Checkout</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ##### Breadcumb Area End ##### -->
+
+<!-- ##### Checkout Area Start ##### -->
+<form id="checkOutForm">
+    <div class="checkout_area section-padding-80">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-12 col-md-6">
+                    <h5>Billing Address</h5>
+                    <a href="/addUserAddress/{{loggedInUser._id}}" type="button" class="btn essence-btn">Add Address</a>
+                    {{!-- <img
+                        src="https://images.unsplash.com/photo-1531315630201-bb15abeb1653?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8YmFja2dyb3VuZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60">
+                    --}}
+
+                    <div class="checkout_details_area mt-50 clearfix">
+
+                        <div class="cart-page-heading mb-30">
+                            {{!-- {{#each loggedInUser}} --}}
+                            <div class="card" style="width: 36rem;">
+                                <div class="card-body">
+                                    <h6 class="card-subtitle">
+                                        <span>
+                                            <input type="radio" value="{{loggedInUser._id}}" name="selectedaddress"checked>
+                                            {{this.Address}}
+
+                                             <p>{{#each add1}}
+                  
+                    {{this}}<br>
+                   
+                    {{/each}}</p>
+                                            <br>
+                                            <p class="card-text">                              
+                                            </p>
+                                        </span>
+                                    </h6>
+
+                                    <a href="/editAddress/{{this._id}}" class="btn essence-btn">Edit</a>
+                                    <a href="/removeAddress/{{this._id}}"
+                                        onclick="return confirm('Are you sure about removing this address')"
+                                        role="button" class="btn essence-btn"
+                                        style="background-color:#FF084E">Remove</a>
+                                </div>
+                            </div>
+                            <div class="mt-2"></div>
+                            {{!-- {{/each}} --}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-5 ml-lg-auto">
+
+                    <div class="order-details-confirmation">
+                        {{!-- <form id="checkOutForm"> --}}
+
+                            <div class="cart-page-heading">
+                                <h5>Your Order</h5>
+                                <p>The Details</p>
+                            </div>
+
+                            <ul class="order-details-form mb-4">
+                                <li><span>Product</span> <span>Total</span></li>
+                                <li><span>Cocktail Yellow dress</span> <span>$59.90</span></li>
+                                <li><span>Subtotal</span> <span>$59.90</span></li>
+                                <li><span>Shipping</span> <span>Free</span></li>
+                                <li><span>Total</span> <input type="text" value={{totalAmount}} name="total"
+                                        hidden>₹{{totalAmount}}.00 </li>
+                            </ul>
+
+                            <div id="accordion" role="tablist" class="mb-4">
+                                <div class="card">
+                                    <div class="form-check">
+                                        <input class="form-check-input" value="COD" type="radio" name="PaymentMethod"
+                                            id="flexRadioDefault1" checked>
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            COD(Cash on delivery)
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" value="RazorPay" type="radio"
+                                            name="PaymentMethod" id="flexRadioDefault2">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            RazorPay
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" value="Paypal" type="radio"
+                                            name="PaymentMethod" id="flexRadioDefault2">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            Paypal
+                                        </label>
+                                    </div>
+                                </div>
+
+
+                                <div class="card">
+                                    <div class="card-header" class="form-check" role="tab" id="headingFour">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn essence-btn">Place Order</button>
+                            {{!--
+                        </form> --}}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- ##### Checkout Area End ##### -->
+
+
+
+<script>
+
+    $("#checkOutForm").submit((e) => {
+        e.preventDefault()
+        $.ajax({
+            url: '/placeOrder',
+            method: 'post',
+            data: $('#checkOutForm').serialize(),
+            success: (response) => {
+                if (response.CODStatus) {
+                   Swal.fire(
+  'Good job!',
+  'Your order has been placed!',
+  'success'
+).then((response) => {
+                        window.location.href = "/orderConfirmation"
+                    })
+
+                } else if(response.razorPay) {
+                    razorpayPayment(response)
+
+                }else if(response.paypal){
+                      for(let i = 0;i < response.links.length;i++){
+                      if(response.links[i].rel == 'approval_url'){
+                      location.href=response.links[i].href
+                       }
+                     }
+                }
+
+            }
+        })
+    })
+    function razorpayPayment(order) {
+        var options = {
+            "key": "rzp_test_Wj5kpFajNXnCpi", // Enter the Key ID generated from the Dashboard
+            "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "NILE SHOPPING",
+            "description": "Test Transaction",
+            "image": "https://example.com/your_logo",
+            "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
+            "handler": function (response) {
+                //alert(response.razorpay_payment_id);
+                //alert(response.razorpay_order_id);
+                //alert(response.razorpay_signature);
+
+                verifyPayment(response, order)
+            },
+            "prefill": {
+                "name": "Gaurav Kumar",
+                "email": "gaurav.kumar@example.com",
+                "contact": "9999999999"
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+
+    }
+
+    function verifyPayment(payment, order) {
+        $.ajax({
+            url: '/verify-payment',
+            data: {
+                payment,
+                order
+            },
+            method: 'post',
+            success: (response) => {
+                if (response.status) {
+
+                    location.href = "/orderConfirmation";
+
+                } else {
+                    alert('payment Failed')
+                }
+            }
+        })
+    }
+
+</script>

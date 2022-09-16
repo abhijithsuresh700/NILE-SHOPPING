@@ -1,0 +1,104 @@
+ <!-- ##### Header Area Start ##### -->
+    <header class="header_area">
+        <div class="classy-nav-container breakpoint-off d-flex align-items-center justify-content-between">
+            <!-- Classy Menu -->
+            <nav class="classy-navbar" id="essenceNav">
+                <!-- Logo -->
+                <a class="nav-brand" href="/"><img src="img/core-img/logo.png" alt=""></a>
+                <!-- Navbar Toggler -->
+                <div class="classy-navbar-toggler">
+                    <span class="navbarToggler"><span></span><span></span><span></span></span>
+                </div>
+                <!-- Menu -->
+                <div class="classy-menu">
+                    <!-- close btn -->
+                    <div class="classycloseIcon">
+                        <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                    </div>
+                    <!-- Nav Start -->
+                    <div class="classynav">
+                        <ul>
+                            <li><a href="/shop">MEN</a>
+                                <ul class="dropdown">
+                                        <li><a href="/shop">Shirts</a></li>
+                                        <li><a href="/shop">T-Shirts</a></li>
+                                        <li><a href="/shop">Jackets</a></li>
+                                        <li><a href="/shop">Sweaters</a></li>
+                                        <li><a href="/shop">Suits</a></li>
+                                        <li><a href="/shop">Rain Jackets</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="/shop">WOMEN</a>
+                                <ul class="dropdown">
+                                    <li><a href="/shop">Kurtas</a></li>
+                                    <li><a href="/shop">Saree</a></li>
+                                    <li><a href="/shop">Lehenga</a></li>
+                                    <li><a href="/shop">Dupattas</a></li>
+                                    <li><a href="/shop">Shirts</a></li>
+                                    <li><a href="/shop">T-Shirts</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="/shop">KIDS</a>
+                             <ul class="dropdown">
+                                    <li><a href="/shop">Shirts</a></li>
+                                    <li><a href="/shop">T-Shirts</a></li>
+                                    <li><a href="/shop">Shorts</a></li>
+                                    <li><a href="/shop">Jeans</a></li>
+                                    <li><a href="/shop">Lehenga</a></li>
+                                    <li><a href="/shop">Dupattas</a></li>
+                                    </ul>
+                                    </li>
+                                    <li><a href="/orderDetails">My Orders</a></li>
+                                    
+                        </ul>
+                        <ul class="" >
+                            {{#if loggedInUser}}
+                    <div class="btn-group">
+                    <button type="button" class="btn btn-light text-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{loggedInUser.Name}}
+                    </button>
+                    <ul class="dropdown-menu" style="height:40px;">
+                        <li><a  href="/logout"><i class="fa-solid fa-power-off"></i>LogOut</a></li>
+                    </ul>
+                    </div>
+                    </ul>
+                    {{else}}
+                    <ul><li>
+                    <a href="/signup">SignUp/Login</a>
+                    </li>
+                    </ul>
+                    {{/if}}
+                        
+                </div>
+                    <!-- Nav End -->
+                </div>
+            </nav>
+
+            <!-- Header Meta Data -->
+            <div class="header-meta d-flex clearfix justify-content-end">
+                <!-- Search Area -->
+                <div class="search-area">
+                    <form action="#" method="post">
+                        <input type="search" name="search" id="headerSearch" placeholder="Type for search">
+                        <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                    </form>
+                </div>
+                <!-- Favourite Area -->
+                <div class="favourite-area">
+                    <a href="/wishList"><img src="img/core-img/heart.svg" alt=""></a>
+                </div>
+                <!-- User Login Info -->
+                <div class="user-login-info">
+                    <a href="/userProfile"><img src="img/core-img/user.svg" alt=""></a>
+                    
+                </div>
+                <!-- Cart Area -->
+                <div class="cart-area">
+                    <a href="/cart"><img src="img/core-img/bag.svg"  alt=""> <span>{{cartCount}}</span></a>
+                    <!--id="essenceCartBtn"-->
+                </div>
+            </div>
+
+        </div>
+    </header>
+    <!-- ##### Header Area End ##### -->

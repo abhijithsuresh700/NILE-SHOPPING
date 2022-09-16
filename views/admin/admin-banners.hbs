@@ -1,0 +1,48 @@
+<div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">Banners List</h1>
+                    {{!-- <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
+                        For more information about DataTables, please visit the <a target="_blank"
+                            href="https://datatables.net">official DataTables documentation</a>.</p> --}}
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Detailed Banner-Details</h6>
+                            <a href="/admin/admin-add-banners" style="margin-top:10px ;" role="button" class="btn btn-info">Add Banners</a>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        
+                                        <tr>
+                                            <th>Banner Heading</th>
+                                            <th>Banner Sub-Heading</th>
+                                            <th>Description</th>
+                                            <th>Image</th>
+                                            <th>Edit</th>
+                                            <th>Delete</th>
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        {{#each banner}}     
+                                        <tr>
+                                            <td>{{this.bannerHeader}}</td>
+                                            <td>{{this.bannerSubHeading}}</td>
+                                            <td>{{this.description}}</td>
+                                            <td><img style="width:30px; height:30px" src="/images/{{this.images.[0]}}"></td>
+                                            <td><a href="/admin//admin-editBanner/{{this._id}}" role="button" class="btn btn-info">Edit</a></td>
+                                            <td><a href="/admin/delete-banner/{{this._id}}"  onclick="return confirm('Are u Sure to delete  : {{this.productname}}')" role="button" class="btn btn-danger">Delete</a></td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>

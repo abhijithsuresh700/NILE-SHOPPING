@@ -1,0 +1,67 @@
+<div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">Products List</h1>
+                    
+                    {{!-- <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
+                        For more information about DataTables, please visit the <a target="_blank"
+                            href="https://datatables.net">official DataTables documentation</a>.</p> --}}
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Detailed ProductsData</h6>
+                             <a href="/admin/admin-add-products" style="margin-top:10px ;" role="button" class="btn btn-info">Add Products</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="usertable" width="100%" cellspacing="0">
+                                    <thead>
+                                        
+                                        <tr>
+                                            
+                                            <th>PRODUCT NAME</th>
+                                            <th>BRAND NAME</th>
+                                            <th>PRICE</th>
+                                            <th>OFFER PRICE</th>
+                                            <th>CATAGORY</th>
+                                            {{!-- <th>DESCRIPTION</th> --}}
+                                            <th>IMAGE</th>
+                                            <th>EDIT</th>
+                                            <th>DELETE</th>
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        {{#each product}}
+                                        <tr>
+                                            <td>{{this.productname}}</td>
+                                            <td>{{this.brandname}}</td>
+                                            <td>{{this.price}}</td>
+                                            <td>{{this.offerprice}}</td>
+                                            <td>{{this.category}}</td>
+                                            {{!-- <TD>{{this.description}}</TD> --}}
+                                            <td><img style="width:30px; height:30px" src="/images/{{this.images.[0]}}"></td>
+                                            <td> 
+                                            <a href="/admin/edit-products/{{this._id}}" role="button" class="btn btn-info">Edit</a> 
+                                            </td>
+                                            <td>
+                                            <a href="/admin/delete-product/{{this._id}}"  onclick="return confirm('Are u Sure to delete  : {{this.productname}}')" role="button" class="btn btn-danger">Delete</a></td>
+                                            </td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <script>
+      $(document).ready(function () {
+            $('#usertable').DataTable();
+        });
+    </script>
+
