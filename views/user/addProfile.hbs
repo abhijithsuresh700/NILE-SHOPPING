@@ -43,7 +43,7 @@
                             <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="basic">
-                                        <form class="form-horizontal" role="form" action="/addUserAddress" method="post" enctype="multipart/form-data">
+                                        <form class="form-horizontal" role="form" action="/addUserAddress" method="post" >
                                             <div class="form-group">
                                                 <label for="inputfullname" class="col-lg-2 control-label">Name</label>
                                                 <div class="col-lg-10">
@@ -79,20 +79,42 @@
                                                 </div>
                                             </div> --}}
                                             <div class="form-group">
-                                                <label for="inputaddress" class="col-lg-2 control-label">Address</label>
+                                                <label for="inputaddress" class="col-lg-2 control-label">Name</label>
                                                 <div class="col-lg-10">
-                                                    <textarea type="" class="form-control" name="userAddress" id="inputaddress" placeholder="Address"></textarea>
+                                                    <input type="" class="form-control" name="userName" id="inputaddress" placeholder="Full Name" required></textarea>
                                                    
                                                 </div>
+                                                <label for="inputaddress" class="col-lg-2 control-label">Address1</label>
+                                                <div class="col-lg-10">
+                                                    <input type="" class="form-control" name="userAddress1" id="inputaddress" placeholder="Address1" required></textarea>
+                                                   
+                                                </div>
+                                                  <label for="inputaddress" class="col-lg-2 control-label">Address2</label>
+                                                 <div class="col-lg-10">
+                                                    <input type="" class="form-control" name="userAddress2" id="inputaddress" placeholder="Address2" required></textarea>
+                                                   
+                                                </div>
+                                                  <label for="inputaddress" class="col-lg-2 control-label">Area</label>
+                                                 <div class="col-lg-10">
+                                                    <input type="" class="form-control" name="userArea" id="inputaddress" placeholder="Area" required></textarea>
+                                                   
+                                                </div>
+                                                <label for="inputaddress" class="col-lg-2 control-label">State</label>
+                                                <div class="col-lg-10">
+                                                    <input type="" class="form-control" name="userState" id="inputaddress" placeholder="State" required></textarea>
+                                                   
+                                                </div>
+
+
                                             </div>
                                              <input name="userId" value="{{userDetails._id}}" hidden>
 
-                                            <div class="form-group">
+                                            {{!-- <div class="form-group">
                                                 <label  class="col-lg-2 control-label">Profile Photo</label>
                                                 <div class="col-lg-10">
-                                                    <input type="file" class="filestyle" name="images" data-classbutton="btn btn-default btn-lg" data-input="false" id="filestyle-0" tabindex="-1" style="position: fixed; left: -500px;" required multiple><div class="bootstrap-filestyle input-group"><input type="text" class="form-control " disabled="" placeholder="Choose file"> <span class="input-group-btn" tabindex="0">  <label for="filestyle-0" class="btn btn-default btn-lg">    <span class="glyphicon glyphicon-folder-open"></span>   </label></span></div>
+                                                    <input type="file" class="filestyle" name="images" data-classbutton="btn btn-default btn-lg" data-input="false" id="filestyle-0" tabindex="-1" style="position: fixed; left: -500px;"  multiple><div class="bootstrap-filestyle input-group"><input type="text" class="form-control " disabled="" placeholder="Choose file"> <span class="input-group-btn" tabindex="0">  <label for="filestyle-0" class="btn btn-default btn-lg">    <span class="glyphicon glyphicon-folder-open"></span>   </label></span></div>
                                                 </div>    
-                                            </div>
+                                            </div> --}}
                                             <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Save Profile</button></div>
 
                                         </form>

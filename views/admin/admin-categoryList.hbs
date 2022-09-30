@@ -50,7 +50,9 @@
                                                 <a href="/admin/admin-editCategory/{{this._id}}" role="button" class="btn btn-info">Edit</a> 
                                             </td>
                                             <td>
-                                                 <a href="/admin/admin-deleteCategory/{{this._id}}" role="button" class="btn btn-danger">Delete</a></td>
+                                                 {{!-- <a href="/admin/admin-deleteCategory/{{this._id}}" role="button" class="btn btn-danger">Delete</a> --}}
+                                                 <button type="button" onclick="deleteCategory('{{this._id}}')" class="btn btn-danger">Delete</button>
+                                                 </td>
                                             </td>
                                             
                                             
@@ -70,4 +72,44 @@
       $(document).ready(function () {
             $('#usertable').DataTable();
         });
+    </script>
+
+    <script>
+          function deleteCategory(categoryId) {
+            alert("hello")
+            console.log(categoryId,"heeeeee")
+  //   event.preventDefault();
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Once deleted, category will be removed from the Category list!",
+    icon: "warning",
+   showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+  }).then(async(willDelete) => {
+    if (willDelete.isConfirmed) {
+    await  Swal.fire({
+        title:'Deleted!',
+      text:'Your file has been deleted.',
+      icon:'success',
+  })
+      $.ajax({
+        url: '/admin/deleteCategory',
+        data:  {categoryId:categoryId} ,
+        method: 'post',
+        success: (response) => {
+          if (response) {
+           location.href = "/admin/admin-categoryList"
+          } else {
+            Swal.fire("something went wrong")
+          }
+        }
+      })
+    } else {
+      Swal.fire("Your cCategory is safe!");
+    }
+  })
+}
+
     </script>

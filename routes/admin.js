@@ -1,9 +1,9 @@
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
 const adminHelpers = require('../helpers/admin-helpers');
 const multer = require('multer');
 let edit=false;
-var userhelpers= require("../helpers/user-helpers")
+let userhelpers= require("../helpers/user-helpers")
 
 
 /* --------------------------------- multer --------------------------------- */
@@ -23,42 +23,36 @@ const upload = multer({storage: fileStorageEngine});
 /* GET users listing. */
 
 
-router.get('/', function(req, res, next) {
-
-  
+router.get('/', function(req, res, next){
     res.render('admin/admin-login')
  
 });
 
 
-var adminUserName='admin@gmail.com'
-var adminPass='12345'
+let adminUserName='admin@gmail.com'
+let adminPass='12345'
 
-router.post('/admin-login',async (req,res)=>{
+router.post('/admin-login',(req,res)=>{
   const{adminEmail,adminPassword}=req.body
   if(adminUserName == adminEmail && adminPass == adminPassword){
   req.session.adminloggedin = true
-
-  let paymentMethodChart= await adminHelpers.paymentMethodChart()
-  let yearlyChart=await adminHelpers.yearlyChart()
-  let monthlyChart=await adminHelpers.monthlyChart()
-  let dailyChart=await adminHelpers.dailyChart()
-  console.log(yearlyChart,"8888888884444444444444444444");
-  console.log(monthlyChart,"qqqqqqqqqqqqqqqqq");
-  console.log(dailyChart,"pppppppppppppppppppp");
-  res.render('admin/admin-dashboard',{admin:true,paymentMethodChart,yearlyChart,monthlyChart,dailyChart})
+  res.redirect('/admin/admin-dashboard');
   }else{
     req.session.loginError=true
     res.redirect('/admin/')
-   
   }
   })
 
 
-router.post('/admin-dashboard', function(req, res) {
-  res.redirect('/admin/admin-login');
+router.get('/admin-dashboard',async function(req, res) {
+  let paymentMethodChart= await adminHelpers.paymentMethodChart()
+  let yearlyChart=await adminHelpers.yearlyChart()
+  let monthlyChart=await adminHelpers.monthlyChart()
+  let dailyChart=await adminHelpers.dailyChart()
+  let allOrders=await adminHelpers.allOrders()
+  let deliveredOrders=await adminHelpers.deliveredOrders()
+  res.render('admin/admin-dashboard',{admin:true,paymentMethodChart,yearlyChart,monthlyChart,dailyChart,allOrders,deliveredOrders})
 });
-
 
 /* ------------------------------- users list ------------------------------- */
 
@@ -120,12 +114,12 @@ router.post("/add-products", upload.array("images", 4), (req, res) => {
   if (!req.files) {
       res.redirect("/admin/admin-add-products");
   }
-  var filenames = req.files.map(function (file) {
+  let filenames = req.files.map(function (file) {
       return file.filename;
   });
   req.body.images = filenames;
   adminHelpers.addProducts(req.body).then((response) => {
-  
+ 
     res.redirect("/admin/admin-products");
 });
 });
@@ -150,7 +144,7 @@ router.get('/edit-products/:id',async(req,res)=>{
     if (!req.files) {
         res.redirect("/admin/admin-edit-products");
     }
-    var filenames = req.files.map(function (file) {
+    let filenames = req.files.map(function (file) {
         return file.filename;
     });
     
@@ -166,11 +160,10 @@ router.get('/edit-products/:id',async(req,res)=>{
 /* ----------------------------- delete products ---------------------------- */
 
 
-router.get('/delete-product/:id',(req,res)=>{
-  let proId=req.params.id
-  adminHelpers.deleteProduct(proId).then((response)=>{
-    res.redirect('/admin/admin-products')
-  })
+  router.post('/deleteProduct',(req,res,next)=>{
+    adminHelpers.deleteProduct(req.body.productId).then((response)=>{
+      res.json(response)
+    })
   });
 
   /* ------------------------------  categoryList ------------------------------ */
@@ -189,12 +182,15 @@ router.get('/delete-product/:id',(req,res)=>{
 
 
   router.get('/admin-category', function(req, res, next) {
-    res.render('admin/admin-category',{admin:true});
+    let category=req.session.category
+    res.render('admin/admin-category',{admin:true,category});
+    req.session.category=false;
   });
 
 
   router.post('/addcategory',(req,res)=>{
     adminHelpers.addCategory(req.body).then((response)=>{
+      req.session.category=response
       res.redirect('/admin/admin-category');
     })
   });
@@ -221,11 +217,10 @@ router.get('/delete-product/:id',(req,res)=>{
 /* ----------------------------- delete category ---------------------------- */
 
 
-router.get('/admin-deleteCategory/:id',(req,res)=>{
-  let categoryId=req.params.id
-  adminHelpers.deleteCategory(categoryId).then((response)=>{
-    res.redirect('/admin/admin-categoryList')
-  })
+  router.post('/deleteCategory',(req,res,next)=>{
+    adminHelpers.deleteCategory(req.body.categoryId).then((response)=>{
+      res.json(response)
+    })
   });
 
 
@@ -252,7 +247,7 @@ router.get('/admin-banners', function(req, res, next) {
     if (!req.files) {
       res.redirect("/admin/admin-add-banners");
   }
-  var filenames = req.files.map(function (file) {
+  let filenames = req.files.map(function (file) {
       return file.filename;
   });
   req.body.images = filenames;
@@ -278,7 +273,7 @@ router.get('/admin-banners', function(req, res, next) {
   if (!req.files) {
       res.redirect("/admin/admin-editBanner");
   }
-  var filenames = req.files.map(function (file) {
+  let filenames = req.files.map(function (file) {
       return file.filename;
   });
   
@@ -291,11 +286,10 @@ router.get('/admin-banners', function(req, res, next) {
 /* ----------------------------- delete banner ---------------------------- */
 
 
-router.get('/delete-banner/:id',(req,res)=>{
-  let bannerId=req.params.id
-  adminHelpers.deleteBanner(bannerId).then((response)=>{
-    res.redirect('/admin/admin-banners')
-  })
+  router.post('/deleteBanner',(req,res,next)=>{
+    adminHelpers.deleteBanner(req.body.bannerId).then((response)=>{
+      res.json(response)
+    })
   });
 
 /* ------------------------------- Orders ------------------------------ */
@@ -306,10 +300,158 @@ router.get('/admin-orders',async function(req, res, next) {
     res.render('admin/admin-orders',{admin:true,allOrderDetails});
 
   })
- 
-
 });
 
+/* ------------------------------- Coupon ------------------------------ */
+
+
+router.get('/admin-coupon',async function(req, res, next) {
+  await adminHelpers.getCoupon().then((coupon)=>{
+    res.render('admin/admin-coupon',{admin:true,coupon});
+
+  })
+});
+
+router.get('/admin-banners', function(req, res, next) {
+  adminHelpers.getBanners().then((banner)=>{
+  res.render('admin/admin-banners',{admin:true,banner});
+})
+});
+
+/* -------------------------------Add Coupon ------------------------------ */
+
+
+router.get('/admin-add-coupon',async function(req, res, next) {   
+  // await adminHelpers.getAllOrdersDetails().then((allOrderDetails)=>{
+    res.render('admin/admin-add-coupon',{admin:true});
+
+  // })
+});
+
+router.post('/add-coupons',(req,res)=>{
+  adminHelpers.addCoupon(req.body).then((response)=>{
+    res.redirect('/admin/admin-add-coupon');
+  })
+});
+
+/* ----------------------------- delete coupon ---------------------------- */
+
+
+  router.post('/deleteCoupon',(req,res,next)=>{
+    adminHelpers.deleteCoupon(req.body.userId).then((response)=>{
+      res.json(response)
+    })
+  });
+
+
+  /* ------------------------------ report ------------------------------ */
+
+
+router.get('/admin-report', function(req, res, next) {
+  // adminHelpers.getProducts().then((product)=>{
+    res.render('admin/admin-report',{admin:true});
+  // })
+    });
+
+    /* ------------------------------ change status ----------------------------- */
+
+    router.post('/changeOrderStatus',(req,res)=>{
+      adminHelpers.changeOrderStatus(req.body.id,req.body.status).then(()=>{
+        res.redirect('/admin/admin-orders')
+      })   
+    })
+
+/* ------------------------------ sales report ------------------------------ */
+
+
+    router.post('/daily-report', function(req, res, next) {
+      adminHelpers.dailySales(req.body.day).then((product)=>{
+        res.render('admin/admin-dailyReport',{admin:true,product});
+      })
+        });
+
+
+    router.post('/monthly-report', function(req, res, next) {
+      adminHelpers.monthlySales(req.body.month).then((product)=>{
+        res.render('admin/admin-monthlyReport',{admin:true,product});
+      })
+        });
+
+
+        router.post('/yearly-report', function(req, res, next) {
+          adminHelpers.yearlySales(req.body.year).then((product)=>{
+            res.render('admin/admin-yearlyReport',{admin:true,product});
+          })
+            });
+
+
+             /* ------------------------------ offers ------------------------------ */
+
+
+  router.get('/admin-offers',async function(req, res, next) {
+    await adminHelpers.getOffer().then((offer)=>{
+    res.render('admin/admin-offers',{admin:true,offer});
+    })
+  });
+
+
+  /* -------------------------------Add Offers ------------------------------ */
+
+
+router.get('/admin-add-offer',async function(req, res, next) {   
+  // await adminHelpers.getAllOrdersDetails().then((allOrderDetails)=>{
+    res.render('admin/admin-add-offer',{admin:true});
+
+  // })
+});
+
+router.post('/add-offer',(req,res)=>{
+  adminHelpers.addOffer(req.body).then((response)=>{
+    res.redirect('/admin/admin-add-offer');
+  })
+});
+
+
+/* ----------------------------- delete offers ---------------------------- */
+
+
+router.post('/deleteOffer',(req,res,next)=>{
+  adminHelpers.deleteOffer(req.body.offerId).then((response)=>{
+    res.json(response)
+  })
+});
+
+
+  /* ------------------------------wallet offers ------------------------------ */
+
+
+    router.get('/admin-walletOffers',async function(req, res, next) {
+     await adminHelpers.getWalletOffer().then((offer)=>{
+     res.render('admin/admin-walletOffers',{admin:true,offer});
+      })
+      });
+
+       
+      
+  /* -------------------------------Add wallet Offers ------------------------------ */
+
+
+router.get('/admin-add-walletOffer',async function(req, res, next) {   
+  // await adminHelpers.getAllOrdersDetails().then((allOrderDetails)=>{
+    res.render('admin/admin-add-walletOffer',{admin:true});
+
+  // })
+});
+
+
+router.post('/add-walletOffer',(req,res)=>{
+  adminHelpers.addwalletOffer(req.body).then((response)=>{
+    res.redirect('/admin/admin-add-walletOffer');
+  })
+});
+
+  
+            
 
 
 

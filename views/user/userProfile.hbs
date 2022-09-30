@@ -18,13 +18,31 @@
     <div class="col-md-12">
       <div class="grid profile">
         <div class="grid-header">
+          {{!-- {{#each userAddress.[0].address}} --}}
           <div class="col-xs-2">
             {{!-- <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-circle" alt=""> --}}
-            <img src="/images/{{loggedInUser.DP.[0]}}" class="img-circle" alt="">
+            <img src="/images/{{loggedInUser.ProfilePic.[0]}}" class="img-circle" alt="">
           </div>
-          <div class="col-xs-7">
-            <h3>{{loggedInUser.Name}}</h3>
-            <p style="color:#ffff">{{loggedInUser.Email}}</p>
+          {{!-- {{/each}} --}}
+          <div class="col-xs-7 mt-5">
+            <h4 style="color:#000000">{{loggedInUser.Name}}</h4>
+            <h4 style="color:#000000">{{loggedInUser.Email}}</h4>
+            <div onclick="showimage()" >
+  <div id="button1"  style="display: block; width: 14rem;" name="oo" class="btn btn-primary"><span><i class="fa-solid fa-camera"></i></span>Upload Image</div>
+           
+            </div>
+           <form action="/profilePic" method="post" enctype="multipart/form-data">
+           <input name="userId" value="{{loggedInUser._id}}" hidden>
+           <span style="display: none;" id="image" ><input name="images" type="file" id="formFile" required  multiple/><button class="btn btn-primary profile-button" type="submit">upload</button></span> 
+
+            </form>
+            <script>
+            function showimage(){  
+ document.getElementById("image").style.display="block";
+ document.getElementById("button1").style.display="none";
+}
+            </script>
+            
           </div>
         </div>
         <div class="grid-body">
@@ -46,16 +64,23 @@
                   <p><strong>Phone:</strong> {{loggedInUser.MobileNumber}}</p>
                 </div>
                 <div class="col-md-6">
-                    <div class=""><a href="/addUserAddress/{{loggedInUser._id}}" class="btn btn-light profile-button" type="submit">Add Address</a></div>
-                 <p><strong>Address:</strong>
-                   <p>{{#each add1}}
-                  
-                    {{this}}<br>
+                    {{!-- <div class="d-grid gap-2 d-md-flex justify-content-md-end"><a href="/addUserAddress/{{loggedInUser._id}}" class="btn btn-primary profile-button" type="submit">Add Address</a></div> --}}
+                    
+                 <div><span><strong>ADDRESS:</strong></span><span class="d-grid gap-2 d-md-flex justify-content-md-end"><a href="/addUserAddress/{{loggedInUser._id}}" class="btn btn-primary profile-button" type="submit">Add Address</a></span></div>
+                   <p>{{#each userAddress}}
+                  <span style="margin-left:-20px; margin-right: 10px;"><i class="fa-solid fa-circle-dot"></i></span>
+                    <span><strong>{{this.Address.userName}}</strong></span>
+                    <div>{{this.Address.userAddress1}}</div>
+                    <div>{{this.Address.userAddress2}}</div>
+                    <div>{{this.Address.userArea}}</div>
+                    <div>{{this.Address.userState}}</div>
+                    
+                    <br>
                    
                     {{/each}}</p>
-
                  
-                 </p>
+                 
+                 
                 </div>
               </div>
             </div>
@@ -96,95 +121,16 @@
         </a>
       </div>
 
-      {{!-- <div class="col-lg-4 my-3">
-        <a href="/viewOrderListPage">
+      <div class="col-lg-4 my-3">
+        <a href="/wishList">
         <div class="card p-5">
           <div style="font-size:30px; font-weight:bolder; " class="text-center"><i class="fa-solid fa-box-open"></i></div>
-          <div style="font-weight:bold" class="text-center">Orders</div>
-          <div class="text-center">Check your Order status</div>
+          <div style="font-weight:bold" class="text-center">wallet</div>
+          <div class="text-center">Check your wallet</div>
         </div>
         </a>
-      </div> --}}
-                    {{!-- <div class="checkout_details_area mt-50 clearfix">
-                        <div class="cart-page-heading mb-30">
-                            <div class="card" style="width: 36rem;">
-                                <div class="card-body">
-                                    <h6 class="card-subtitle">
-                                        <span>
-                                            <input type="radio" value="{{this._id}}" name="selectedaddress"checked>
-                                            {{this.userName}}
-                                            <p class="card-text">
-                                                <span>
-                                                    {{this.userAddress1}}<br>
-                                                    {{this.userAddress2}}<br>
-                                                    {{this.userArea}}<br>
-                                                    {{this.userState}}<br>
-                                                    {{this.userPinCode}}<br>kkk
-                                                </span>
-                                            </p>
-                                        </span>
-                                    </h6>
-                                </div>
-                            </div>
-                            <div class="mt-2"></div>
-                           
-                        </div>
-                    </div> --}}
-                  {{!-- <div class="timeline-centered">
-                    <article class="timeline-entry">
-                      <div class="timeline-entry-inner">
-                        <time class="timeline-time" datetime="2014-01-10T03:45"><span>11:41 AM</span> <span>Today</span></time>
+      </div>
 
-                        <div class="timeline-icon bg-primary">
-                          <i class="fa fa-home"></i>
-                        </div>
-
-                        <div class="timeline-label">
-                          <h2><a href="#">Jeffrey Williams</a> <span>posted a status update</span></h2>
-                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                        </div>
-                      </div>
-                    </article>
-
-                    <article class="timeline-entry left-aligned">
-                      <div class="timeline-entry-inner">
-                        <time class="timeline-time" datetime="2014-01-10T03:45"><span>08:12 AM</span> <span>Today</span></time>
-
-                        <div class="timeline-icon bg-warning">
-                          <i class="fa fa-bell"></i>
-                        </div>
-
-                        <div class="timeline-label">
-                          <h2><a href="#">Job Meeting</a></h2>
-                          <p>You have a meeting at <strong>10:00 AM</strong> in the <strong>Meeting Room</strong>.</p>
-                        </div>
-                      </div>
-                    </article>
-
-                    <article class="timeline-entry">
-                      <div class="timeline-entry-inner">
-                        <time class="timeline-time" datetime="2014-01-10T03:45"><span>02:10 AM</span> <span>15/06/2014</span></time>
-
-                        <div class="timeline-icon bg-danger">
-                          <i class="fa fa-user"></i>
-                        </div>
-
-                        <div class="timeline-label">
-                          <h2><a href="#">Larry Gardner</a> <span>changed his</span> <a href="#">Profile Picture</a></h2>
-                          <blockquote>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</blockquote>
-                          <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-responsive img-rounded full-width" alt="">
-                        </div>
-                      </div>
-                    </article>
-
-                    <article class="timeline-entry begin">
-                      <div class="timeline-entry-inner">
-                        <div class="timeline-icon bg-default">
-                          <i class="fa fa-laptop"></i>
-                        </div>
-                      </div>
-                    </article>
-                  </div> --}}
                 </div>
               </div>
             </div>
@@ -264,7 +210,7 @@
     <!-- END USER PROFILE -->
   </div>
 </div>
-
+{{!-- https://bootdey.com/img/Content/bg1.jpg --}}
 <style type="text/css">
 body{margin-top:90px;
 background:#eee;
@@ -272,10 +218,11 @@ background:#eee;
 
 
 .profile .grid-header {
-    background: url('https://bootdey.com/img/Content/bg1.jpg') no-repeat center center;
+    background: url('') no-repeat center center;
 	background-size: cover;
 	color: #f5f5f5;
 }
+
 
 .profile img {
 	max-width: 100%;
@@ -704,6 +651,14 @@ background:#eee;
 </style>
 
 <script type="text/javascript">
+  
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
+/*$("#button").click(showimage(){
+  $("#image").show();
+});*/
+
+
 
 </script>
 </body>

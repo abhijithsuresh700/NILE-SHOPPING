@@ -1,3 +1,6 @@
+{{#if_eq wishlistCount 0}}
+<div style="width:100%;height:10rem; justify-content: center;margin-top: 5rem;" class="mt-5"><h1 style="text-align: center;">No wishList Items </h1></div>
+{{else}}
 <section class="h-100 gradient-custom">
   {{!-- <form action="/proceed-to-pay" method="post">  --}}
   <div class="container py-5">
@@ -5,14 +8,14 @@
       <div class="col-md-8">
         <div class="card mb-4">
           <div class="card-header py-3">
-            <h5 class="mb-0">Cart - items</h5>
+            <h5 class="mb-0">Wish List</h5>
           </div>
-          {{#each cartProducts}}
+          {{#each wishListProducts}}
           
           <div class="card-body">
             <!-- Single item -->
             <div class="row">
-              <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
+              <div class="col-lg-2 col-md-12 mb-4 mb-lg-0">
                 <!-- Image -->
                 <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
                   <img src="/images/{{this.product.images.[0]}}"
@@ -24,49 +27,30 @@
                 <!-- Image -->
               </div>
 
-              <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
+              <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
                 <!-- Data -->
                 <p><strong>{{this.product.productname}}</strong></p>
-                {{!-- <h6 class="text-uppercase">Size</h6> 
-                <label class="radio"> <input type="radio" name="size" value="S"> <span>S</span> </label> 
-                <label class="radio"> <input type="radio" name="size" value="M"> <span>M</span> </label> 
-                <label class="radio"> <input type="radio" name="size" value="L"> <span>L</span> </label> 
-                <label class="radio"> <input type="radio" name="size" value="XL"> <span>XL</span> </label> 
-                <label class="radio"> <input type="radio" name="size" value="XXL"> <span>XXL</span> </label> --}}
-
-                {{!-- <p>Color: blue</p>
-                <p>Size: M</p> --}}
-                {{!-- <button type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
-                  title="Remove item">
-                  <i class="fas fa-trash"></i>
-                </button> --}}
-                {{!-- <button type="button" class="btn btn-danger btn-sm mb-2" data-mdb-toggle="tooltip"
-                  title="Move to the wish list">
-                  <i class="fas fa-heart"></i>
-                </button> --}}
-                <!-- Data -->
               </div>
 
-              <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
-                <!-- Quantity -->
-                <div class="d-flex mb-4" style="max-width: 300px">
-                  
-                   <button  class="ml-1 btn btn-light" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../loggedInUser._id}}',-1)">-</button> 
-                   <button class="ml-1 btn btn-light"><span  id="{{this.product._id}}" >{{this.quantity}}</span></button>
-                   <button  class="ml-1 btn btn-light"  onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../loggedInUser._id}}',1)">+</button>
-                   <button type="button" onclick="deleteCartProduct('{{this._id}}','{{this.product._id}}')" class="btn btn-light btn-sm me-1 mb-2 ml-5" data-mdb-toggle="tooltip"
+               <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+                <!-- Data -->
+                <p><strong>₹{{this.product.price}}.00</strong></p>
+              </div>
+
+              <div class="col-lg-1 col-md-6 mb-4 mb-lg-0">
+                <!-- Data -->
+                 <button type="button" onclick="deleteWishListProduct('{{this._id}}','{{this.product._id}}')" class="btn btn-light btn-sm me-1 mb-2 ml-5" data-mdb-toggle="tooltip"
                   title="Remove item">
                   <i class="fas fa-trash" style="color:#FF084E;" aria-hidden="true"></i>
                 </button>
-                </div>
-                <!-- Quantity -->
-
-                <!-- Price -->
-                <p class="text-start text-md-center">
-                  <strong>₹{{this.product.price}}.00</strong>
-                </p>
-                <!-- Price -->
               </div>
+
+              <div class="col-lg-2 col-md-6 mb-4 mb-lg-0 ml-5">
+                <!-- Data -->
+               <a href="/add-to-cart/{{this.product._id}}" class="btn btn-info">Add to Cart</a>
+              </div>
+
+
             </div>
             <!-- Single item -->
 
@@ -76,44 +60,6 @@
          
           {{/each}}
         </div>
-        hhhhhhhhhhhhhhhhh
-
-
-        <div class="container-fluid">  
-<div class="grid-margin stretch-card">
-                <div class="card" style="height: 200px;">
-                  <div class="card-body">
-                    <div class="table-responsive">
-                      <table class="table">
-                        <tbody style="border: none;">
-                          <tr>
-                            <td style="width:25px">{{inc @index}}</td>
-                            <td style="width:150px">{{this.Date}}</td>
-                             <td style="width:350px;font-size:15px; font-weight: 600;">{{#each this.products}}<i class="far fa-dot-circle"></i>{{this.product.productname}} <br> {{/each}}</td>  
-                            <td style="width:150px">₹{{this.totalAmount}}.00</td>
-                            <td style="width:150px">{{this.paymentMethod}}</td>
-                            <td style="width:150px">
-                                                {{#if this.status}}
-                                               <span style="color:green">{{this.status}}</span> 
-                                                {{else}}
-                                                <span style="color:red">Canceled</span>
-                                                {{/if}}
-                                                </td>
-                            <td style="width:150px"><a href="/orderedProducts/{{this._id}}" type="button" class="btn btn-info">View Product</a></td> 
-                             <td style="width:150px"> {{#if this.status}}<a role="button" class="btn btn-warning"  onclick="cancelOrder('{{this._id}}')">Cancel</a>
-                                  {{else}} 
-                                   <span style="color:red">Canceled</span>                                       
-                                  {{/if}}
-                             </td>                           
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              </div>
-              <div style="height:100px"></div>
 
 
 
@@ -148,7 +94,48 @@
   </div>
   {{!-- </form> --}}
 </section>
+{{/if_eq}}
 
+
+
+
+<script>
+   function deleteWishListProduct(wishListId, proId) {
+  //   event.preventDefault();
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Once deleted, product will be removed from the wishlist!",
+    icon: "warning",
+   showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+  }).then(async(willDelete) => {
+    if (willDelete.isConfirmed) {
+    await  Swal.fire({
+        title:'Deleted!',
+      text:'Your file has been deleted.',
+      icon:'success',
+  })
+      $.ajax({
+        url: '/deletewishListProduct',
+        data: {wishList:wishListId,product:proId},
+        method: 'post',
+        success:(response)=>{
+          if(response) {
+           location.href = "/wishList"
+          } else {
+            Swal.fire("something went wrong")
+          }
+        }
+      })
+    } else {
+      Swal.fire("Your wishlist product is safe!");
+    }
+  })
+}
+
+</script>
 
 
 

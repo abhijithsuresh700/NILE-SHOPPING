@@ -1,0 +1,45 @@
+<div class="container">
+<h2>Sales Reports</h2>
+
+                <table class="table shadow p-3 mb-5 bg-white rounded">
+              <tbody class="text-center">
+              <tr>
+                <form action="/admin/daily-report" method="post">
+              <th scope="row">Daily Report</th>
+              <td>               
+                <input  name="day"  type="date" >                  
+              </td>
+              <td> <button type="submit" class="btn btn-outline-info" data-mdb-ripple-color="dark"><i class="bi bi-eye"></i> View</button> </td>
+             </form>
+            </tr>
+            <tr>
+              <form action="/admin/monthly-report" method="post">
+              <th scope="row">Monthly Report</th>
+              <td><input  type="month" name="month" class="no-border"></td>
+              <td>
+                <button type="submit" class="btn btn-outline-info" data-mdb-ripple-color="dark"><i class="bi bi-eye"></i> View</button>
+                </td> 
+                </form>           
+            </tr>
+            <tr>
+              <form action="/admin/yearly-report" method="post">
+              <th scope="row">Yearly Report</th>
+              <td style="text-align: -webkit-center;">
+               <select name="year" type="year" class="form-control" id="dropdownYear"
+	              style="width: 100px;">
+                  <option value="2022">2022</option>
+                  <option value="2021">2021</option>
+                  <option value="2020">2020</option>
+                  <option value="2019">2019</option>
+                  <option value="2018">2018</option>
+                  <option value="2017">2017</option>
+                  <option value="2016">2016</option>
+                  <option value="2015">2015</option>
+              </select>
+              </td>
+              <td><button type="submit" class="btn btn-outline-info" data-mdb-ripple-color="dark"><i class="bi bi-eye"></i> View</button></td>
+             </form>
+            </tr>
+          </tbody>
+        </table>
+        </div>

@@ -8,7 +8,7 @@
                       <div class="form-group row">
                         <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Category Name</label>
                         <div class="col-sm-4 row">
-                          <input type="text" class="form-control" id="exampleInputUsername2" name="catagoryname" placeholder="Category Name" required/>
+                          <input type="text" class="form-control" id="checkCategory"  name="catagoryname" placeholder="Category Name" required/>
                         </div>
                         <div class="col-sm-2 mt-1">
                             <button style="background-color:white; color:black; box-shadow: 2px 5px rgb(88, 88, 88);" type="submit" class="btn btn-dark fs-6" onclick="addSubCatagories()">+</button>
@@ -27,5 +27,8 @@
                   </div>
                 </div>
               </div>
+              {{#if category.valid}}
+              <h3 style="color:red">category exists</h3>
+              {{/if}}
                   {{!-- </div> --}}
                   <script src="/javascripts/categories/subcategories.js"></script>

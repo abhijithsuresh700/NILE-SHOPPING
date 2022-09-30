@@ -22,8 +22,5 @@
     "paypal-rest-sdk": "^1.8.1",
     "razorpay": "^2.8.3",
     "twilio": "^3.80.1"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.19"
   }
 }

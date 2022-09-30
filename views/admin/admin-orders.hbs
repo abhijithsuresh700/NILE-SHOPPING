@@ -23,7 +23,8 @@
                                             <th>Order Date</th>
                                             <th>Order Amount</th>
                                             <th>Payment-Method</th>
-                                            <th>Status</th>                                
+                                            <th>Status</th>
+                                            <th>Action</th>                                
                                         </tr>
                                     </thead>
                                     
@@ -35,14 +36,16 @@
                                             <td>{{this.Date}}</td>
                                             <td>{{this.totalAmount}}</td>
                                             <td>{{this.paymentMethod}}</td>
+                                            <td>{{this.status}}</td>
                                             <td><div class="dropdown">
-  <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Status
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+   {{this.status}}
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="#">Action</a>
-    <a class="dropdown-item" href="#">Another action</a>
-    <a class="dropdown-item" href="#">Something else here</a>
+    <a class="dropdown-item" onclick="changeStatus('{{this._id}}','Shipped')">Shipped</a>
+    <a class="dropdown-item" onclick="changeStatus('{{this._id}}','Out for delivery')">Out for delivery</a>
+    <a class="dropdown-item" onclick="changeStatus('{{this._id}}','Delivered')">Delivered</a>
+    <a class="dropdown-item" onclick="changeStatus('{{this._id}}','Canceled')">Cancel</a>
   </div>
 </div></td>
                                                                                         
@@ -61,4 +64,18 @@
       $(document).ready(function () {
             $('#usertable').DataTable();
         });
+    </script>
+
+    <script>
+        function changeStatus(OrderId,status){
+            $.ajax({
+                url:"/admin/changeOrderStatus",
+                data:{id:OrderId,status:status},
+                method:"post",
+                success:(response)=>{
+                    location.reload()
+                }
+            })
+           
+        }
     </script>

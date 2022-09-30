@@ -1,12 +1,13 @@
 const { response } = require('express');
-var express = require('express');
+let express = require('express');
 // const { response } = require('../app');
 const adminHelpers = require('../helpers/admin-helpers');
 // const { changeProductQuantity } = require('../helpers/user-helpers');
 const userHelpers = require('../helpers/user-helpers');
-var router = express.Router();
+let router = express.Router();
 const multer = require('multer');
-var userhelpers= require("../helpers/user-helpers")
+let userhelpers= require("../helpers/user-helpers");
+const { deleteWishListProduct } = require('../helpers/user-helpers');
 
 
 const accountSID = 'AC54bc4ec92ecb60b0299be34e3fda1ce0'
@@ -113,7 +114,7 @@ router.post('/popup', function(req, res) {
 
 
 router.get('/add-to-cart/:id',verifyLogin,(req,res)=>{
-  userhelpers.addToCart(req.params.id,req.session.user._id).then(()=>{
+  userhelpers.addToCart(req.params.id,req.session.user._id).then(()=>{  
     res.redirect('/cart')
   })
 });
@@ -123,22 +124,25 @@ router.get('/cart',verifyLogin,async(req,res)=>{
   let cartProducts=await userHelpers.getCartProducts(req.session.user._id)
     let loggedInUser = req.session.user
     let totalAmount= await userhelpers.getTotalAmount(req.session.user._id)
-    console.log(loggedInUser,"userrrrrrrrrrrrr");
-  res.render('user/cart',{totalAmount,loggedInUser,user:true,cartProducts});
-});
+    let cartCount= await userhelpers.getCartCount(loggedInUser._id)
+    console.log(cartProducts,"66666666");
+  res.render('user/cart',{totalAmount,loggedInUser,user:true,cartProducts,cartCount});  
+});   
 
 
 /* --------------------------------- profile -------------------------------- */
 
-router.get('/userProfile',verifyLogin,async(req,res)=>{
-  res.render('user/userProfile',{loggedInUser,user:true});
+router.get('/userProfile',verifyLogin,async(req,res)=>{  
+  await userhelpers.findSingleAddress(req.session.user._id).then((userAddress)=>{    
+  res.render('user/userProfile',{loggedInUser,user:true,userAddress});
+  })
 });
 
-  router.post("/addUserProfile",upload.array("images",4),(req,res)=>{
+  router.post("/addUserProfile",upload.array("images",4),(req,res)=>{  
   if (!req.files){
       res.redirect("/editUserProfile");
   }
-  var filenames = req.files.map(function (file) {
+  let filenames = req.files.map(function (file) {
       return file.filename;
   });
   req.body.images = filenames;
@@ -205,10 +209,7 @@ router.post('/otp',(req,res)=>{
        console.log("wrong otp");
        res.redirect('/signup')
     }
-
-  })
-
- 
+  }) 
 })
 
 /* ------------------------------ singleProduct ----------------------------- */
@@ -232,21 +233,46 @@ router.get('/shop', function(req, res) {
 
 /* ----------------------------- proceed-to-pay  ----------------------------- */
 
-router.get('/proceed-to-pay',verifyLogin,async function(req, res){
-  let totalAmount=await userhelpers.getTotalAmount(req.session.user._id)
-   let userAddress= await userhelpers.findSingleAddress(req.session.user._id)
-  console.log(userAddress,"addressersssseee");
-  res.render('user/checkout',{loggedInUser,user:true,totalAmount});
+// router.get('/proceed-to-pay',verifyLogin,async function(req, res){
+//   let totalAmount=await userhelpers.getTotalAmount(req.session.user._id)
+//     await userhelpers.findSingleAddress(req.session.user._id).then((userAddress)=>{
+//      res.render('user/checkout',{loggedInUser,user:true,totalAmount,userAddress});
+//    })
+// });
+
+router.get('/proceed-to-pay/:id',verifyLogin,async function(req, res){
+  // let totalAmount=await userhelpers.getTotalAmount(req.session.user._id)
+  let totalAmount=await userhelpers.getTotalAmountById(req.params.id)
+  let cartProducts=await userHelpers.getCartProductsById(req.params.id)
+  let deductedamount= totalAmount-loggedInUser.wallet
+  console.log(deductedamount,"666666655555555");
+    await userhelpers.findSingleAddress(req.session.user._id).then((userAddress)=>{
+     res.render('user/checkout',{loggedInUser,user:true,totalAmount,userAddress,cartProducts,deductedamount});
+   })
 });
+
+router.post('/deductWallet',function (req,res,next){
+  userhelpers.wallet(req.body,loggedInUser._id).then(async(response)=>{
+      res.json(response)  
+  })
+});
+
+
 
 
 /* ------------------------------- placeOrder ------------------------------- */
 
 
 router.post('/placeOrder',async(req,res)=>{
+  let response={}
+  if(!req.body.selectedaddress){
+    response.noAddress=true;
+    res.json(response) 
+  }else{
   let products= await userhelpers.getCartProducts(req.session.user._id)
-  let totalAmount=await userhelpers.getTotalAmount(req.session.user._id)
-  let userAddress= await userhelpers.findSingleAddress(req.body.selectedaddress)
+  // let totalAmount=await userhelpers.getTotalAmount(req.session.user._id)
+  let totalAmount=req.body.total
+  let userAddress= await userhelpers.findOrderAddress(req.body.selectedaddress)
   userhelpers.placeOrder(req.body,products,totalAmount,loggedInUser._id,userAddress).then((response)=>{
     if(req.body['PaymentMethod']==='COD'){
     res.json({CODStatus:true});
@@ -263,6 +289,7 @@ router.post('/placeOrder',async(req,res)=>{
     }
     
   })
+}
 });
 
 
@@ -270,12 +297,11 @@ router.post('/placeOrder',async(req,res)=>{
 
 
 router.post('/verify-payment',(req,res)=>{
-  userhelpers.verifyPayment(req.body).then(()=>{
+  userhelpers.verifyPayment(req.body).then((data)=>{
     userhelpers.changePaymentStatus(req.body['order[receipt]']).then(()=>{
       res.json({status:true})
     })
   }).catch((err)=>{
-    console.log(err);
     res.json({status:'Payment failed'})
   })
 })
@@ -287,10 +313,7 @@ router.post('/verify-payment',(req,res)=>{
 router.post('/change-product-quantity',function (req,res,next){
   userhelpers.changeProductQuantity(req.body).then(async(response)=>{
      response.total=await userhelpers.getTotalAmount(req.body.user)
-      res.json(response)
-
-     
-   
+      res.json(response)  
   })
 });
 
@@ -321,8 +344,7 @@ router.get('/orderDetails', function(req, res) {
 
 router.get('/orderedProducts/:id',verifyLogin, async function(req, res) {
   let orderedProducts= await userhelpers.getOrderedProducts(req.params.id)
-  let singleOrderDetails=await userhelpers.getSingleOrderDetails(req.params.id)
-  orderedProducts[0].product.singleOrderStatus=singleOrderDetails[0].status
+  let singleOrderDetails= await userhelpers.getSingleOrderDetails(req.params.id)
   res.render('user/orderedProducts',{loggedInUser,user:true,orderedProducts,singleOrderDetails});
 });
 
@@ -336,25 +358,10 @@ router.get('/addUserAddress/:id',verifyLogin,(req, res)=>{
 });
 
 router.post("/addUserAddress",upload.array("images",4),(req,res)=>{
-  if (!req.files){
-      res.redirect("/addProfile");
-  }
-  var filenames = req.files.map(function (file) {
-      return file.filename;
-  });
-  req.body.images = filenames;
-  console.log(req.body,"useridddddddddd");
-  userhelpers.userAddress(req.body,req.body.userId).then((response) => {
+  userhelpers.userAddress(req.body).then((response) => {
     res.redirect("/userProfile");
 });
 })
-
-/* ------------------------------- addAddress ------------------------------- */
-
-
-router.get('/addaddress', function(req, res) {
-  res.render('user/addaddress',{loggedInUser,user:true});
-});
 
 /* ------------------------------ removeAddress ----------------------------- */
 
@@ -370,13 +377,13 @@ router.get('/removeAddress/:id',(req,res)=>{
 
 
   router.get('/editAddress/:id',async function(req, res) {
-    let addressDetails= await userhelpers.findSingleAddress(req.params.id)
     req.session.edit=true
-    res.render('user/editAddress',{loggedInUser,user:true,addressDetails});
+    let userAddress= await userhelpers.findOrderAddress(req.params.id)
+    res.render('user/editAddress',{loggedInUser,user:true,userAddress});
   });
 
-  router.post("/editedAddress/:id",(req,res)=>{
-    userhelpers.updateAddressDetails(req.params.id,req.body).then((response) => {
+  router.post("/editedAddress",async(req,res)=>{
+    await userhelpers.updateAddressDetails(req.body.addressId,req.body).then((response) => {
       res.redirect("/proceed-to-pay");
   });
   })
@@ -401,11 +408,32 @@ router.get('/error', function(req, res) {
 });
 
 
-/* -------------------------------- wishList -------------------------------- */
 
 
-router.get('/wishList',verifyLogin,function(req,res){
-  res.render('user/wishList',{loggedInUser,user:true})
+/* ---------------------------------- wishList ---------------------------------- */
+
+
+router.get('/add-to-wishList/:id',verifyLogin,async(req,res)=>{
+ await userhelpers.addToWishlist(req.params.id,req.session.user._id).then(()=>{
+    res.redirect('/wishList')
+  })
+});
+
+
+router.get('/wishList',verifyLogin,async(req,res)=>{
+  let wishListProducts=await userhelpers.getWishListProducts(req.session.user._id)
+    let loggedInUser = req.session.user
+    let totalAmount= await userhelpers.getTotalAmount(req.session.user._id)
+    let wishlistCount= await userhelpers.getWishlistCount(loggedInUser._id)
+  res.render('user/wishList',{totalAmount,loggedInUser,user:true,wishListProducts,wishlistCount});  
+});
+
+/* -------------------------- deleteWishListProduct ------------------------- */
+
+router.post('/deletewishListProduct',(req,res,next)=>{
+  userhelpers.deleteWishListProduct(req.body).then((response)=>{
+    res.json(response)
+  })
 });
 
 
@@ -415,6 +443,38 @@ router.get('/wishList',verifyLogin,function(req,res){
 router.get('/test', function(req, res) {
   res.render('user/test',{user:true});
 });
+
+/* ------------------------------- profilePic ------------------------------- */
+
+
+router.post('/profilePic', upload.array("images", 1),(req,res)=>{
+  if (!req.files) {
+    res.redirect("/userProfile");
+}
+let filenames = req.files.map(function (file) {
+    return file.filename;
+});
+req.body.images = filenames;
+  userhelpers.profilePic(req.body.images,req.body.userId).then((response)=>{
+    res.redirect('/userProfile');
+  })
+});
+
+/* ------------------------------ coupon check ------------------------------ */
+
+router.post('/couponCheck',(req,res,next)=>{
+  userhelpers.findSingleCoupon(req.body.coupon).then((response)=>{
+    if( response.noCoupon){
+      res.json(response)
+    }else{
+      userhelpers.checkCoupon(req.session.user._id,response,req.body.amount).then((response)=>{
+        res.json(response)
+      })
+    }  
+  })
+});
+
+
  
 
 

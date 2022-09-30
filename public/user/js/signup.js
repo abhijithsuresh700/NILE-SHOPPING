@@ -132,6 +132,7 @@ function validateConfirmPassword(){
 }
 
 
+
 function validateSignUp(event){
     
     if(!validateName() ||!validateNumber() || !validateEmail() || !validatePassword() ||!validateConfirmPassword()) {

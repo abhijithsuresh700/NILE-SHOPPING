@@ -1,4 +1,6 @@
-
+{{#if_eq cartCount 0}}
+<div style="width:100%;height:10rem; justify-content: center;margin-top: 5rem;" class="mt-5"><h1 style="text-align: center;">No Cart Items - Add items </h1></div>
+{{else}}
 <section class="h-100 gradient-custom">
   {{!-- <form action="/proceed-to-pay" method="post">  --}}
   <div class="container py-5">
@@ -8,12 +10,13 @@
           <div class="card-header py-3">
             <h5 class="mb-0">Cart - items</h5>
           </div>
+          
           {{#each cartProducts}}
           
           <div class="card-body">
             <!-- Single item -->
             <div class="row">
-              <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
+              <div class="col-lg-2 col-md-12 mb-4 mb-lg-0">
                 <!-- Image -->
                 <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
                   <img src="/images/{{this.product.images.[0]}}"
@@ -25,32 +28,20 @@
                 <!-- Image -->
               </div>
 
-              <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
+              <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
                 <!-- Data -->
                 <p><strong>{{this.product.productname}}</strong></p>
-                {{!-- <h6 class="text-uppercase">Size</h6> 
-                <label class="radio"> <input type="radio" name="size" value="S"> <span>S</span> </label> 
-                <label class="radio"> <input type="radio" name="size" value="M"> <span>M</span> </label> 
-                <label class="radio"> <input type="radio" name="size" value="L"> <span>L</span> </label> 
-                <label class="radio"> <input type="radio" name="size" value="XL"> <span>XL</span> </label> 
-                <label class="radio"> <input type="radio" name="size" value="XXL"> <span>XXL</span> </label> --}}
-
-                {{!-- <p>Color: blue</p>
-                <p>Size: M</p> --}}
-                {{!-- <button type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
-                  title="Remove item">
-                  <i class="fas fa-trash"></i>
-                </button> --}}
-                {{!-- <button type="button" class="btn btn-danger btn-sm mb-2" data-mdb-toggle="tooltip"
-                  title="Move to the wish list">
-                  <i class="fas fa-heart"></i>
-                </button> --}}
-                <!-- Data -->
               </div>
 
-              <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+
+
+              <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                <!-- Data -->
+                <p><strong>₹{{this.product.price}}.00</strong></p>
+              </div>
+                            <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
                 <!-- Quantity -->
-                <div class="d-flex mb-4" style="max-width: 300px">
+                <div class="d-flex mb-4" >
                   
                    <button  class="ml-1 btn btn-light" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../loggedInUser._id}}',-1)">-</button> 
                    <button class="ml-1 btn btn-light"><span  id="{{this.product._id}}" >{{this.quantity}}</span></button>
@@ -63,9 +54,6 @@
                 <!-- Quantity -->
 
                 <!-- Price -->
-                <p class="text-start text-md-center">
-                  <strong>₹{{this.product.price}}.00</strong>
-                </p>
                 <!-- Price -->
               </div>
             </div>
@@ -107,7 +95,7 @@
               <li
                 class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
                 {{this.product.productname}}
-                <span>₹100.00</span>
+                <span>₹{{this.product.price}}.00</span>
               </li>
               {{/each}}
               <li class="list-group-item d-flex justify-content-between align-items-center px-0">
@@ -125,10 +113,11 @@
                 <span><strong><span id="total">₹{{totalAmount}}.00</span></strong></span>
               </li>
             </ul>
-
-            <a href="/proceed-to-pay" type="submit" class="btn essence-btn">
-              Go to checkout
+           
+            <a href="/proceed-to-pay/{{cartProducts.[0]._id}}" type="submit" class="btn essence-btn">
+              Go to checkout             
             </a>
+            
           </div>
         </div>
       </div>
@@ -136,6 +125,7 @@
   </div>
   {{!-- </form> --}}
 </section>
+{{/if_eq}}
 
 <style>
   .gradient-custom {

@@ -36,7 +36,8 @@
                                             <td>{{this.description}}</td>
                                             <td><img style="width:30px; height:30px" src="/images/{{this.images.[0]}}"></td>
                                             <td><a href="/admin//admin-editBanner/{{this._id}}" role="button" class="btn btn-info">Edit</a></td>
-                                            <td><a href="/admin/delete-banner/{{this._id}}"  onclick="return confirm('Are u Sure to delete  : {{this.productname}}')" role="button" class="btn btn-danger">Delete</a></td>
+                                            {{!-- <td><a href="/admin/delete-banner/{{this._id}}"  onclick="return confirm('Are u Sure to delete  : {{this.productname}}')" role="button" class="btn btn-danger">Delete</a></td> --}}
+                                            <td><button type="button" onclick="deleteBanner('{{this._id}}')" class="btn btn-danger">Delete</button></td>
                                         </tr>
                                         {{/each}}
                                     </tbody>
@@ -44,5 +45,42 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
+
+                <script>
+                     function deleteBanner(bannerId){
+  //   event.preventDefault();
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Once deleted, the banner will be removed!",
+    icon: "warning",
+   showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+  }).then(async(willDelete) => {
+    if (willDelete.isConfirmed) {
+    await  Swal.fire({
+        title:'Deleted!',
+      text:'Your file has been deleted.',
+      icon:'success',
+  })
+      $.ajax({
+        url: '/admin/deleteBanner',
+        data:  {bannerId:bannerId} ,
+        method: 'post',
+        success: (response) => {
+          if (response) {
+           location.href = "/admin/admin-banners"
+          } else {
+            Swal.fire("something went wrong")
+          }
+        }
+      })
+    } else {
+      Swal.fire("Your Banner is safe!");
+    }
+  })
+}
+ </script>
+

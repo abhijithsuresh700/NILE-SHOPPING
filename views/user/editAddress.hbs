@@ -1,4 +1,4 @@
-<div class="container">
+{{!-- <div class="container">
     
   <div class="row mx-0 justify-content-center">
     
@@ -91,4 +91,184 @@
 <style>
     body { padding: 2rem 0; }
 
+</style> --}}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!--  This file has been downloaded from bootdey.com @bootdey on twitter -->
+    <!--  All snippets are MIT license http://bootdey.com/license -->
+    <title>Profile overview and edit - Bootdey.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+<div class="container bootstrap snippets bootdey">
+    <hr>
+    <ol class="breadcrumb">
+    	<li><a href="#">Users</a></li>
+		<li><a href="#">Profile</a></li>
+		<li class="pull-right"><a href="" class="text-muted"><i class="fa fa-refresh"></i></a></li>
+	</ol>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="well profile">
+                <img class="user img-circle pull-left clearfix" height="54" src="https://bootdey.com/img/Content/user_1.jpg" alt="">
+                <h3 class="name pull-left clearfix">Edit Profile</h3>
+                <div class="clearfix"></div>
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#tab" data-toggle="tab">
+                        	Account
+                        </a>
+                    </li>
+
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="basic">
+                                        <form class="form-horizontal" role="form" action="/editedAddress" method="post" >
+                                        <input type="text" name="addressId" value="{{userAddress.[0]._id}}" hidden>
+               
+                                            <div class="form-group">
+                                                <label for="inputaddress" class="col-lg-2 control-label">Name</label>
+                                                <div class="col-lg-10">
+                                                    <input type="" class="form-control" name="userName" id="inputaddress" value="{{userAddress.[0].Address.userName}}" placeholder="Full Name" required></textarea>
+                                                   
+                                                </div>
+                                                <label for="inputaddress" class="col-lg-2 control-label">Address1</label>
+                                                <div class="col-lg-10">
+                                                    <input type="" class="form-control" name="userAddress1" id="inputaddress" value="{{userAddress.[0].Address.userAddress1}}" placeholder="Address1" required></textarea>
+                                                   
+                                                </div>
+                                                  <label for="inputaddress" class="col-lg-2 control-label">Address2</label>
+                                                 <div class="col-lg-10">
+                                                    <input type="" class="form-control" name="userAddress2" id="inputaddress" value="{{userAddress.[0].Address.userAddress2}}" placeholder="Address2" required></textarea>
+                                                   
+                                                </div>
+                                                  <label for="inputaddress" class="col-lg-2 control-label">Area</label>
+                                                 <div class="col-lg-10">
+                                                    <input type="" class="form-control" name="userArea" id="inputaddress" value="{{userAddress.[0].Address.userArea}}" placeholder="Area" required></textarea>
+                                                   
+                                                </div>
+                                                <label for="inputaddress" class="col-lg-2 control-label">State</label>
+                                                <div class="col-lg-10">
+                                                    <input type="" class="form-control" name="userState" id="inputaddress" value="{{userAddress.[0].Address.userState}}" placeholder="State" required></textarea>
+                                                   
+                                                </div>
+
+
+                                            </div>
+                                             <input name="userId" value="{{userAddress.[0].Address.userId}}" hidden>
+
+                                            <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Save Profile</button></div>
+
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab2">
+                        <div class="row">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>                    
+
+<style type="text/css">
+                        
+body{background:#eee;}
+.profile img.user { margin: 0 20px 10px 0; }
+.profile .name { margin: 14px 0 10px; }
+.profile h5.sales { margin: 10px 0 10px 10px; }
+.profile .sales .list-group-item i { margin-right: 10px; }
+.profile .list-inline i { margin-right: 7px; }
+.profile .messages .list-group-item img { margin-right: 10px; }
+.well {
+    border: 0;
+    padding: 20px;
+    min-height: 63px;
+    background: #fff;
+    box-shadow: none;
+    border-radius: 3px;
+    position: relative;
+    max-height: 100000px;
+    border-bottom: 2px solid #ccc;
+    transition: max-height 0.5s ease;
+    -o-transition: max-height 0.5s ease;
+    -ms-transition: max-height 0.5s ease;
+    -moz-transition: max-height 0.5s ease;
+    -webkit-transition: max-height 0.5s ease;
+}
+
+.form-control {
+    height: 45px;
+    padding: 10px;
+    font-size: 16px;
+    box-shadow: none;
+    border-radius: 0;
+    position: relative;
+}
+
+label {
+    font-weight: 400;
+    color: #444;
+}
+
+.dropzone {
+    position: relative
+    border: 1px solid rgba(0,0,0,0.03);
+    min-height: 360px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    background: rgba(0,0,0,0.03);
+    padding: 23px;
+}
+.dropzone.dz-clickable {
+    cursor: pointer;
+}
+.dropzone .dz-default.dz-message {
+    opacity: 1;
+    -ms-filter: none;
+    filter: none;
+    -webkit-transition: opacity 0.3s ease-in-out;
+    -moz-transition: opacity 0.3s ease-in-out;
+    -o-transition: opacity 0.3s ease-in-out;
+    -ms-transition: opacity 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    position: absolute;
+    width: 428px;
+    height: 123px;
+    margin-left: -214px;
+    margin-top: -61.5px;
+    top: 50%;
+    left: 50%;
+    font-size:40px;
+    color:#5bc0de;
+}                    
 </style>
+
+<script type="text/javascript">
+                        
+                    
+</script>
+</body>
+</html>

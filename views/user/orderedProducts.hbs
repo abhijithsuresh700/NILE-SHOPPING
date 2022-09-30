@@ -1,17 +1,18 @@
-
+{{#each singleOrderDetails.[0].address}}
 <div class="container">
   <h2 class="mb-3 ml-3 mt-3">Order Status</h2>
   <div class="card">
     <div class="card-body">
       <h5>Delivey Address </h5>
-      {{singleOrderDetails.[0].address.userName}}<br>
-      {{singleOrderDetails.[0].address.userAddress1}}<br>
-      {{singleOrderDetails.[0].address.userAddress2}}<br>
-      {{singleOrderDetails.[0].address.userArea}}<br>
-      {{singleOrderDetails.[0].address.userState}}<br>
-      {{singleOrderDetails.[0].address.userMobileNumber}}
+      
+       {{this.Address.userName}}<br>
+      {{this.Address.userAddress1}}<br>
+      {{this.Address.userAddress2}}<br>
+      {{this.Address.userState}}<br>
+    
     </div>
   </div>
+  {{/each}}
   {{#each orderedProducts}}
 <div class="grid-margin stretch-card">
                 <div class="card">

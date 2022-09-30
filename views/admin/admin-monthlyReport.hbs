@@ -1,0 +1,33 @@
+<h4 class="card-title ml-4">Products</h4>
+
+<div class="table-responsive ml-4" style="background-color: white;">
+  <table id="example" class="display nowrap" style="width:100% ;  background-color:white; ">
+    <thead style="color: black;">
+
+      <tr>
+        <th>Date</th>
+        <th>Name</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total Amount</th>
+
+      </tr>
+    </thead>
+    <tbody style="color: black;">
+   {{#each product}}
+      <tr>
+        <td>{{this.date}}</td>
+        <td>{{this.product.productname}}</td>
+        <td>{{this.quantity}}</td>
+        <td>{{this.product.price}}</td>
+        <td>{{this.totalAmount}}</td>
+  
+      </tr>
+      {{/each}}
+    </tbody>
+
+  </table>
+</div>
+</div>
+</div>
+</div>

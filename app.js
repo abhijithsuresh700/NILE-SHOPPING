@@ -1,15 +1,15 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 const db = require("./configuration/connection");
 const session = require('express-session');
 
 
 
-var usersRouter = require('./routes/users');
-var adminRouter = require('./routes/admin');
+const usersRouter = require('./routes/users');
+const adminRouter = require('./routes/admin');
 
 
 
@@ -28,7 +28,7 @@ Handlebars.registerHelper('inc', function (value, options) {
     return parseInt(value) + 1;
   });
 
-var app = express();
+let app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

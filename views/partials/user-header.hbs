@@ -4,7 +4,7 @@
             <!-- Classy Menu -->
             <nav class="classy-navbar" id="essenceNav">
                 <!-- Logo -->
-                <a class="nav-brand" href="/"><img src="img/core-img/logo.png" alt=""></a>
+                <a class="nav-brand" href="/"><img src="/img/core-img/logo.png" alt=""></a>
                 <!-- Navbar Toggler -->
                 <div class="classy-navbar-toggler">
                     <span class="navbarToggler"><span></span><span></span><span></span></span>
@@ -54,7 +54,7 @@
                         <ul class="" >
                             {{#if loggedInUser}}
                     <div class="btn-group">
-                    <button type="button" class="btn btn-light text-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button type="button" class="btn btn-outline-light text-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         {{loggedInUser.Name}}
                     </button>
                     <ul class="dropdown-menu" style="height:40px;">
@@ -77,24 +77,24 @@
             <!-- Header Meta Data -->
             <div class="header-meta d-flex clearfix justify-content-end">
                 <!-- Search Area -->
-                <div class="search-area">
+                {{!-- <div class="search-area">
                     <form action="#" method="post">
                         <input type="search" name="search" id="headerSearch" placeholder="Type for search">
                         <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
                     </form>
-                </div>
+                </div> --}}
                 <!-- Favourite Area -->
                 <div class="favourite-area">
-                    <a href="/wishList"><img src="img/core-img/heart.svg" alt=""></a>
+                    <a href="/wishList"><img src="/img/core-img/heart.svg" alt=""></a>
                 </div>
                 <!-- User Login Info -->
                 <div class="user-login-info">
-                    <a href="/userProfile"><img src="img/core-img/user.svg" alt=""></a>
+                    <a href="/userProfile"><img src="/img/core-img/user.svg" alt=""></a>
                     
                 </div>
                 <!-- Cart Area -->
                 <div class="cart-area">
-                    <a href="/cart"><img src="img/core-img/bag.svg"  alt=""> <span>{{cartCount}}</span></a>
+                    <a href="/cart"><img src="/img/core-img/bag.svg"  alt=""> <span>{{cartCount}}</span></a>
                     <!--id="essenceCartBtn"-->
                 </div>
             </div>
