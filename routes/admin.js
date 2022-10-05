@@ -5,6 +5,15 @@ const multer = require('multer');
 let edit=false;
 let userhelpers= require("../helpers/user-helpers")
 
+let  loggedInAdmin 
+const verifyLogin=(req,res,next)=>{
+  if(req.session.adminloggedin ){
+    next()
+  }else{
+    res.redirect('/admin/')
+  }
+}
+
 
 /* --------------------------------- multer --------------------------------- */
 
@@ -57,7 +66,7 @@ router.get('/admin-dashboard',async function(req, res) {
 /* ------------------------------- users list ------------------------------- */
 
 
-router.get('/admin-users', function(req, res, next) {
+router.get('/admin-users',verifyLogin, function(req, res, next) {
   adminHelpers.getAllUsers().then((userData)=>{
     res.render('admin/admin-users',{admin:true,userData});
   }) 
@@ -67,7 +76,7 @@ router.get('/admin-users', function(req, res, next) {
 /* ------------------------------ product list ------------------------------ */
 
 
-router.get('/admin-products', function(req, res, next) {
+router.get('/admin-products',verifyLogin, function(req, res, next) {
   adminHelpers.getProducts().then((product)=>{
     res.render('admin/admin-products',{admin:true,product});
   })
@@ -79,13 +88,20 @@ router.get('/admin-products', function(req, res, next) {
 
 
 router.get('/block-user/:id', async(req,res)=>{
-  let user = await adminHelpers.blockUser(req.params.id);
+  try {
+    let user = await adminHelpers.blockUser(req.params.id);
   if(req.session.loggedIn){
     req.session.destroy();
     res.redirect('/admin-users');
-  }else res.redirect('/admin/admin-users');
-});
+  }else
+   res.redirect('/admin/admin-users');
 
+    
+  } catch (error) {
+    res.redirect('/error')
+  }
+  
+});
 
 /* ------------------------------ unblock user ------------------------------ */
 
@@ -100,7 +116,7 @@ router.get('/unblock-user/:id', async(req,res)=>{
 /* ------------------------------ add products ------------------------------ */
 
 
-router.get('/admin-add-products', function(req, res, next) {
+router.get('/admin-add-products',verifyLogin, function(req, res, next) {
   adminHelpers.getCategory().then((categoryList)=>{
     res.render('admin/admin-add-products',{admin:true,categoryList});
 
@@ -169,7 +185,7 @@ router.get('/edit-products/:id',async(req,res)=>{
   /* ------------------------------  categoryList ------------------------------ */
 
 
-  router.get('/admin-categoryList', function(req, res, next) {
+  router.get('/admin-categoryList',verifyLogin, function(req, res, next) {
     adminHelpers.getCategory().then((category)=>{
       res.render('admin/admin-categoryList',{admin:true,category});
 
@@ -181,7 +197,7 @@ router.get('/edit-products/:id',async(req,res)=>{
   /* ------------------------------ add category ------------------------------ */
 
 
-  router.get('/admin-category', function(req, res, next) {
+  router.get('/admin-category',verifyLogin, function(req, res, next) {
     let category=req.session.category
     res.render('admin/admin-category',{admin:true,category});
     req.session.category=false;
@@ -205,9 +221,16 @@ router.get('/edit-products/:id',async(req,res)=>{
  }));
 
  router.post('/editedCategory/:id',(req,res)=>{
-  adminHelpers.updateCategoryDetails(req.params.id,req.body).then((response)=>{
-    res.redirect('/admin/admin-categoryList')
-  })
+  try {
+    adminHelpers.updateCategoryDetails(req.params.id,req.body).then((response)=>{
+      res.redirect('/admin/admin-categoryList')
+    })
+    
+  } catch (error) {
+    res.redirect('/error')
+    
+  }
+  
  })
 
 
@@ -226,7 +249,7 @@ router.get('/edit-products/:id',async(req,res)=>{
 
 /* ------------------------------- BannerList ------------------------------- */
 
-router.get('/admin-banners', function(req, res, next) {
+router.get('/admin-banners',verifyLogin, function(req, res, next) {
   adminHelpers.getBanners().then((banner)=>{
   res.render('admin/admin-banners',{admin:true,banner});
 })
@@ -236,7 +259,7 @@ router.get('/admin-banners', function(req, res, next) {
   /* ------------------------------- add banners ------------------------------ */
 
 
-  router.get('/admin-add-banners', function(req, res, next) {   
+  router.get('/admin-add-banners',verifyLogin, function(req, res, next) {   
       res.render('admin/admin-add-banners',{admin:true});
 
   });
@@ -295,7 +318,7 @@ router.get('/admin-banners', function(req, res, next) {
 /* ------------------------------- Orders ------------------------------ */
 
 
-router.get('/admin-orders',async function(req, res, next) {   
+router.get('/admin-orders',verifyLogin, async function(req, res, next) {   
   await adminHelpers.getAllOrdersDetails().then((allOrderDetails)=>{
     res.render('admin/admin-orders',{admin:true,allOrderDetails});
 
@@ -305,14 +328,14 @@ router.get('/admin-orders',async function(req, res, next) {
 /* ------------------------------- Coupon ------------------------------ */
 
 
-router.get('/admin-coupon',async function(req, res, next) {
+router.get('/admin-coupon',verifyLogin, async function(req, res, next) {
   await adminHelpers.getCoupon().then((coupon)=>{
     res.render('admin/admin-coupon',{admin:true,coupon});
 
   })
 });
 
-router.get('/admin-banners', function(req, res, next) {
+router.get('/admin-banners',verifyLogin, function(req, res, next) {
   adminHelpers.getBanners().then((banner)=>{
   res.render('admin/admin-banners',{admin:true,banner});
 })
@@ -321,7 +344,7 @@ router.get('/admin-banners', function(req, res, next) {
 /* -------------------------------Add Coupon ------------------------------ */
 
 
-router.get('/admin-add-coupon',async function(req, res, next) {   
+router.get('/admin-add-coupon',verifyLogin, async function(req, res, next) {   
   // await adminHelpers.getAllOrdersDetails().then((allOrderDetails)=>{
     res.render('admin/admin-add-coupon',{admin:true});
 
@@ -347,7 +370,7 @@ router.post('/add-coupons',(req,res)=>{
   /* ------------------------------ report ------------------------------ */
 
 
-router.get('/admin-report', function(req, res, next) {
+router.get('/admin-report',verifyLogin, function(req, res, next) {
   // adminHelpers.getProducts().then((product)=>{
     res.render('admin/admin-report',{admin:true});
   // })
@@ -388,7 +411,7 @@ router.get('/admin-report', function(req, res, next) {
              /* ------------------------------ offers ------------------------------ */
 
 
-  router.get('/admin-offers',async function(req, res, next) {
+  router.get('/admin-offers',verifyLogin, async function(req, res, next) {
     await adminHelpers.getOffer().then((offer)=>{
     res.render('admin/admin-offers',{admin:true,offer});
     })
@@ -398,7 +421,7 @@ router.get('/admin-report', function(req, res, next) {
   /* -------------------------------Add Offers ------------------------------ */
 
 
-router.get('/admin-add-offer',async function(req, res, next) {   
+router.get('/admin-add-offer',verifyLogin, async function(req, res, next) {   
   // await adminHelpers.getAllOrdersDetails().then((allOrderDetails)=>{
     res.render('admin/admin-add-offer',{admin:true});
 
@@ -425,7 +448,7 @@ router.post('/deleteOffer',(req,res,next)=>{
   /* ------------------------------wallet offers ------------------------------ */
 
 
-    router.get('/admin-walletOffers',async function(req, res, next) {
+    router.get('/admin-walletOffers',verifyLogin, async function(req, res, next) {
      await adminHelpers.getWalletOffer().then((offer)=>{
      res.render('admin/admin-walletOffers',{admin:true,offer});
       })
@@ -436,7 +459,7 @@ router.post('/deleteOffer',(req,res,next)=>{
   /* -------------------------------Add wallet Offers ------------------------------ */
 
 
-router.get('/admin-add-walletOffer',async function(req, res, next) {   
+router.get('/admin-add-walletOffer',verifyLogin, async function(req, res, next) {   
   // await adminHelpers.getAllOrdersDetails().then((allOrderDetails)=>{
     res.render('admin/admin-add-walletOffer',{admin:true});
 
@@ -451,6 +474,14 @@ router.post('/add-walletOffer',(req,res)=>{
 });
 
   
+
+/* ----------------------------- check Category ---------------------------- */
+
+
+router.post('/checkCategoryqw',(req,res,next)=>{
+  console.log("ddddddddd");
+    res.json(response)
+});
             
 
 
