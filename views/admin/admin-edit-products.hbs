@@ -1,5 +1,5 @@
 
-            <div class=" d-flex justify-content-center container d-flex align-items-center" style="margin-top:80px;">
+            {{!-- <div class=" d-flex justify-content-center container d-flex align-items-center" style="margin-top:80px;">
 <div class="col-12 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
@@ -20,7 +20,6 @@
   <option >asos</option>
   <option>RIVER ISLAND</option>
 </select>
-                        {{!-- <input type="text" name="brandname" class="form-control" id="exampleInputEmail3" placeholder="Brand Name" /> --}}
                       </div>
                       <div class="col-md-6">
                         <div class="form-group ">
@@ -40,7 +39,6 @@
   <option>WOMEN</option>
   <option>KIDS</option>
 </select>
-                        {{!-- <input type="text" name="category" class="form-control" id="exampleInputCity1" placeholder="Category" /> --}}
                       </div>
                       <div class="form-group">
                         <label for="exampleTextarea1">Description</label>
@@ -51,17 +49,6 @@
                           rows="4" required
                         ></input>
                       </div>
-                       {{!-- <div class="form-group">
-                        <label for="fromFile">Image upload</label>
-                        <input type="file" name="img[]" class="file-upload-default" />
-                        <div class="input-group col-xs-8">
-                          <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image" />
-                          <span class="input-group-append">
-                            
-                            <button class="file-upload-browse btn btn-primary" type="button"> Upload </button>
-                          </span>
-                        </div>
-                      </div> --}}
                       <div class="mb-5">
                            <label for="formFile" class="form-label">Image upload</label>
                            <img src="/public/images/{{productDetails._id}}" id="imageView" style="width:100px;height:100px;">
@@ -79,4 +66,96 @@
                 function viewImage(event){
                     document.getElementById('imageView').src=URL.createObjectURL(event.target.files[0])
                 }
-            </script>
+            </script> --}}
+
+            <div class=" d-flex justify-content-center container d-flex align-items-center" style="margin-top:80px;">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h1 class="card-title mb-5" style="font-size:30px;">Edit Product</h1>
+        <form class="forms-sample" action="/admin/edited-products/{{productDetails._id}}" method="post" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="exampleInputName1">Product Name</label>
+            <input type="text" name="productname" value="{{productDetails.productname}}" class="form-control" id="exampleInputName1" placeholder="Product Name"
+              required />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail3">Brand Name</label>
+            <select class="form-select" name="brandname" value="{{productDetails.brandname}}" placeholder="Brand Name" aria-label="Default select example"
+              required>
+              <option disabled selected>Brand</option>
+              <option>TOPSHOP</option>
+              <option>MANGO</option>
+              <option>ZARA</option>
+              <option>Bershka</option>
+              <option>asos</option>
+              <option>RIVER ISLAND</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group ">
+              <label for="exampleInputPassword4">Price</label>
+              <input type="number" name="price" value="{{productDetails.price}}" class="form-control" id="exampleInputPassword4" placeholder="Price"
+                required />
+            </div>
+            <div class="form-group ">
+              <label for="exampleInputPassword4">Offer Percentage</label>
+              <input type="number" name="offerpercentage" value="{{productDetails.offerpercentage}}" class="form-control" id="exampleInputPassword4"
+                placeholder="Offer Percentage" required />
+            </div>
+            <div class="form-group ">
+              <label for="exampleInputPassword4">Size</label>
+              <input type="text" name="size" value="{{productDetails.size}}" class="form-control" id="exampleInputPassword4" placeholder="Size"
+                required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputCity1">Category</label>
+            <select class="form-select"  onchange="checkCategory(this.value)" name="category" value="{{productDetails.category}}" aria-label="Default select example"
+              required>
+              <option disabled selected>Category</option>
+  <option>MEN</option>
+  <option>WOMEN</option>
+  <option>KIDS</option>
+            </select>
+          </div>
+
+
+
+          <div class="form-group">
+            <label for="exampleInputCity1">Sub-Category</label>
+            <select class="form-select" name="subCategory" name="subCategory" id="subCategory"
+              aria-label="Default select example" required>
+
+              <option disabled selected>Sub-Category</option>
+  <option>Shirt</option>
+  <option>T-Shirt</option>
+  <option>Jeans</option>
+
+            </select>
+          </div>
+
+
+          <div class="form-group">
+            <label for="exampleTextarea1">Description</label>
+            <input class="form-control" name="description" value="{{productDetails.description}}" id="exampleTextarea1" rows="4" name="description"
+              required></input>
+          </div>
+
+          <div class="mb-5">
+            <label for="formFile" class="form-label">Image upload</label>
+            <input class="form-control" name="images" type="file" id="formFile" required multiple />
+          </div>
+          <button type="submit" class="btn btn-primary me-2"> Submit </button>
+          <button class="btn btn-light">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+ <script>
+  function viewImage(event){
+  document.getElementById('imageView').src=URL.createObjectURL(event.target.files[0])
+  }
+  </script> 

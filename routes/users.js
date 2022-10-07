@@ -245,7 +245,6 @@ router.get('/proceed-to-pay/:id',verifyLogin,async function(req, res){
   let totalAmount=await userhelpers.getTotalAmountById(req.params.id)
   let cartProducts=await userHelpers.getCartProductsById(req.params.id)
   let deductedamount= totalAmount-loggedInUser.wallet
-  console.log(deductedamount,"666666655555555");
     await userhelpers.findSingleAddress(req.session.user._id).then((userAddress)=>{
      res.render('user/checkout',{loggedInUser,user:true,totalAmount,userAddress,cartProducts,deductedamount});
    })

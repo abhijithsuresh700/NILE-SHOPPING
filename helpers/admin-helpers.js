@@ -64,6 +64,7 @@ module.exports={
         },
 
         updateProductDetails:(proId,products)=>{
+            products.offerprice= products.price-(products.price*(products.offerpercentage/100))
             return new Promise((resolve,reject)=>{
                 db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id:ObjectId(proId)},{
                     $set:{
